@@ -1,5 +1,8 @@
 package Net;
 
+import model.Direction;
+import model.Snake;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,26 +15,33 @@ public class Server {
     private final ServerSocket serverSocket;
     private final List<ClientHandler> clinetHandlers;
 
+    private GameServer gameServer;
+
     public Server(ServerSocket serverSocket) {
         clinetHandlers = new ArrayList<>();
         this.serverSocket = serverSocket;
+        this.gameServer=new GameServer();
     }
 
     public void startServer() {
         try {
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
-                System.out.println("new client connected");
                 ClientHandler clientHandler = new ClientHandler(socket);
+                System.out.println("New player connected: "+clientHandler.getClientUserNamme());
                 clinetHandlers.add(clientHandler);
+                gameServer.addPlayer(clientHandler,new Snake(getInitialPosition(), Direction.DOWN));
                 Thread thread = new Thread(clientHandler);
                 thread.start();
-
             }
         }
         catch(IOException ignore){
             closeServerSocket();
         }
+    }
+    public int  getInitialPosition(){
+        double pos = Math.random();
+        return (int)(pos*100);
     }
 
     public void closeServerSocket() {

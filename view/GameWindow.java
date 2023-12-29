@@ -2,6 +2,7 @@ package view;
 
 
 
+import Net.Client;
 import controller.GameController;
 import model.Snake;
 
@@ -11,16 +12,15 @@ import java.awt.*;
 
 public class GameWindow extends JFrame {
 
-    private GameController gc;
 
-    public GameWindow(Boolean b){
+    public GameWindow(Boolean b, Client client){
 
         setTitle("Slither.io");
         setSize(getWindowWidth(),getWindowHeight());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        GameView g = new GameView(b);
+        GameView g = new GameView(b,client);
         setContentPane(g);
 
         addKeyListener(g.getGc());

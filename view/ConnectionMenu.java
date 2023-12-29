@@ -60,7 +60,7 @@ public class ConnectionMenu extends JFrame {
                 }catch (IOException ignore){
 
                 }
-                new GameWindow(false); // Lance la fenêtre du jeu
+                new GameWindow(false,client); // Lance la fenêtre du jeu
             }
         });
 

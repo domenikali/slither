@@ -73,13 +73,10 @@ public class GamePlane {
                                 // Revenir au menu
                                 controller.getGv().showMenu();
                                 controller.getGv().closeCurrentGameWindow();
-
-
                             }
                         }, 1000);
                     }else{
                         controller.getGv().updateTimerLabel();
-
                     }
                 }
             }, 1000, 1000);  // Répéter chaque seconde
@@ -114,7 +111,8 @@ public class GamePlane {
                     generateFood(1500,1500);
                 }
             }, 0, 1000);
-        }else{
+        }
+        else{
             gameTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {

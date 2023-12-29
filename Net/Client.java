@@ -70,7 +70,6 @@ public class Client {
     }
 
     public void listenForMessage(){
-
         String msgFromServer;
         while (socket.isConnected()){
             try {

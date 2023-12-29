@@ -1,6 +1,7 @@
 package view;
 
 
+import Net.Client;
 import controller.GameController;
 import model.Food;
 
@@ -30,8 +31,8 @@ public class GameView extends JPanel {
 
 
 
-    public GameView(Boolean b) {
-        this.gc=new GameController(b,this);
+    public GameView(Boolean b, Client client) {
+        this.gc=new GameController(b,this,client);
         this.modePvsP=b;
         background = new ImageIcon(this.getClass().getResource("/ressources/background.PNG")).getImage();
         snakeImage=new ImageIcon(this.getClass().getResource("/ressources/serpent.png")).getImage();

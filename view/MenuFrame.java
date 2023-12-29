@@ -48,7 +48,7 @@ public class MenuFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Fermer le menu et lancer le jeu
                 dispose(); // Ferme la fenêtre du menu
-                new GameWindow(false); // Lance la fenêtre du jeu
+                new GameWindow(false,null); // Lance la fenêtre du jeu
             }
         });
 
@@ -57,7 +57,7 @@ public class MenuFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Fermer le menu et lancer le jeu
                 dispose(); // Ferme la fenêtre du menu
-                new GameWindow(true); // Lance la fenêtre du jeu
+                new GameWindow(true,null); // Lance la fenêtre du jeu
             }
         });
 

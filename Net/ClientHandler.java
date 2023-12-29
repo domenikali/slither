@@ -14,6 +14,8 @@ public class ClientHandler implements Runnable{
 
     private String clientUserNamme;
 
+    private String newPos;
+
     public ClientHandler(Socket socket) {
         try {
             this.socket = socket;
@@ -41,6 +43,7 @@ public class ClientHandler implements Runnable{
         while (socket.isConnected()){
             try{
                 messageFromClinet = bufferedReader.readLine();
+                newPos=messageFromClinet;
                 System.out.println(messageFromClinet);
             }catch (IOException e){
                 closeEverything(socket,bufferedWriter,bufferedReader);
@@ -97,4 +100,11 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    public String getClientUserNamme() {
+        return clientUserNamme;
+    }
+
+    public String getNewPos() {
+        return newPos;
+    }
 }

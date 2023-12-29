@@ -1,5 +1,7 @@
 package controller;
 
+import Net.Client;
+import Net.Serialize;
 import model.Direction;
 import model.GamePlane;
 
@@ -11,28 +13,24 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class GameController extends MouseAdapter implements KeyListener{
-
     private GamePlane gp;
     private GameView gv;
-
     private boolean modePvsP;
 
-    public GameController(Boolean b,GameView gv){
+    private Client client;
+
+    public GameController(Boolean b, GameView gv, Client client){
+        this.client=client;
         this.modePvsP=b;
         this.gv=gv;
         this.gp=new GamePlane(this);
     }
-
     public GamePlane getGp(){
         return this.gp;
     }
-
-
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
-
     public void keyPressed(KeyEvent e) {
         if(modePvsP) {
             switch (e.getKeyCode()) {
@@ -99,8 +97,13 @@ public class GameController extends MouseAdapter implements KeyListener{
         if (!modePvsP) {
             int mouseX = e.getX();
             int mouseY = e.getY();
-            gp.getSnake().setMouseX(mouseX);
-            gp.getSnake().setMouseY(mouseY);
+            if(client!=null){
+                client.write(Serialize.serializePlayerPos(mouseX,mouseY));
+            }else {
+                gp.getSnake().setMouseX(mouseX);
+                gp.getSnake().setMouseY(mouseY);
+            }
+
         }
     }
 
