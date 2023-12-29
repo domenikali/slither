@@ -21,7 +21,7 @@ public class MenuFrame extends JFrame {
 
 
         // Créer les boutons du menu
-        JButton soloButton = new JButton("Solo");
+        JButton soloButton = new JButton("Online");
         JButton pvspButton = new JButton("PvsP");
         JButton quitButton = new JButton("Quit");
 

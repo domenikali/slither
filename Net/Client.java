@@ -1,5 +1,8 @@
 package Net;
 
+import view.ConnectionMenu;
+import view.MenuFrame;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -39,6 +42,20 @@ public class Client {
         }
     }
 
+    public void write(String str){
+        if (socket.isConnected()){
+            try {
+                bufferedWriter.write(userName + ": " + str);
+                bufferedWriter.newLine();
+                bufferedWriter.flush();
+            }catch (IOException ignore){
+
+            }
+        }else {
+            System.out.println("server disconnected");
+        }
+    }
+
     public void closeEverithing(Socket socket,BufferedWriter bufferedWriter,BufferedReader bufferedReader) {
         try {
             if (socket != null)
@@ -53,30 +70,27 @@ public class Client {
     }
 
     public void listenForMessage(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String msgFromServer;
-                while (socket.isConnected()){
-                    try {
-                        msgFromServer=bufferedReader.readLine();
-                        System.out.println(msgFromServer);
-                    }catch (IOException e){
-                        closeEverithing(socket,bufferedWriter,bufferedReader);
-                    }
-                }
+
+        String msgFromServer;
+        while (socket.isConnected()){
+            try {
+                msgFromServer=bufferedReader.readLine();
+                System.out.println(msgFromServer);
+            }catch (IOException e){
+                closeEverithing(socket,bufferedWriter,bufferedReader);
             }
-        }).start();
+        }
     }
 
     public static void main(String [] args) throws IOException {
+        new ConnectionMenu().setVisible(true);/*
         Scanner scanner = new Scanner(System.in);
         System.out.println("enter username for chat");
         String username = scanner.nextLine();
         Socket socket = new Socket("localhost",1234);
         Client client = new Client(socket,username);
-        client.listenForMessage();
-        client.sendMessage();
+        new Thread(client::listenForMessage).start();
+        new Thread(client::sendMessage).start();*/
     }
 }
 

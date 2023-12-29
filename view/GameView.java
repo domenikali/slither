@@ -56,34 +56,6 @@ public class GameView extends JPanel {
         });
     }
 
-
- /*   protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-
-       for (SnakeBodyPart part: gc.gp.snake.getBody()) {
-            g.setColor(Color.GREEN);
-            g.fillRect(part.getX(), part.getY(), 10, 10);
-        }
-
-
-        for(int i=0;i<gc.getGp().getSnake().getBody().size();i++){
-            if(i==0){
-                g.setColor(Color.BLACK);
-                g.fillRect(gc.getGp().getSnake().getBody().get(i).getX(), gc.getGp().getSnake().getBody().get(i).getY(), 10, 10);
-            }else{
-                g.setColor(Color.GREEN);
-                g.fillRect(gc.getGp().getSnake().getBody().get(i).getX(), gc.getGp().getSnake().getBody().get(i).getY(), 10, 10);
-
-            }
-        }
-        for (Food food : gc.getGp().getFoods()) {
-            g.setColor(food.getColor());
-            g.fillRect(food.getX(), food.getY(), food.getSize(), food.getSize());
-        }
-        repaint();
-    } */
-
     protected void paintComponent(Graphics g) {
         if(!modePvsP) {
             super.paintComponent(g);

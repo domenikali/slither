@@ -60,8 +60,6 @@ public class Server {
         }
     }
 
-
-
     public static void main(String[] args) throws IOException {
         ServerSocket serversocket = new ServerSocket(1234);
         Server server = new Server(serversocket);
