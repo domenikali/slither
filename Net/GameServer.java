@@ -37,8 +37,8 @@ public class GameServer {
             for(Map.Entry<ClientHandler,Snake> entry: players.entrySet()){
                 if(entry.getKey().getNewPos()==null)
                     continue;
-                stringToPos(entry.getKey().getNewPos(),entry.getKey().getClientUserNamme());
-                entry.getValue().move(newX,newY);
+                Pair newPos =stringToPos(entry.getKey().getNewPos(),entry.getKey().getClientUserNamme());
+                entry.getValue().move(newPos.getX(),newPos.getY());
                 checkFoodCollision(entry.getValue());
 
                 //server.sendMessage(Serialize.serializePlayerSnake(entry));
@@ -80,7 +80,7 @@ public class GameServer {
         StringBuilder stringBuilder = new StringBuilder();
         for(Map.Entry<ClientHandler,Snake> entry: players.entrySet()){
             stringBuilder.append(Serialize.serializePlayerSnake(entry));
-            //stringBuilder.append(";");
+            stringBuilder.append(";");
         }
         stringBuilder.append("&");
         for(Pair pair : foods){
@@ -91,10 +91,8 @@ public class GameServer {
         server.sendMessage(stringBuilder.toString());
     }
 
-    private void stringToPos(String newPos,String username) {
+    private Pair stringToPos(String newPos,String username) {
         String temp =Serialize.removeUsername(newPos,username);
-        Pair p =Serialize.deserializePlayerPos(temp);
-        newX=p.getX();
-        newY=p.getY();
+        return Serialize.deserializePlayerPos(temp);
     }
 }

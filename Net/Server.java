@@ -31,6 +31,7 @@ public class Server {
                 gameServer.addPlayer(clientHandler,new Snake(110, Direction.RIGHT));
                 Thread thread = new Thread(clientHandler);
                 thread.start();
+
             }
         }
         catch(IOException ignore){
