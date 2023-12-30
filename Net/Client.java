@@ -13,7 +13,8 @@ public class Client {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String userName;
-
+    private String snakes;
+    private String foods;
     private String messageFromServer;
 
     public Client (Socket socket,String userName){
@@ -76,7 +77,9 @@ public class Client {
         while (socket.isConnected()){
             try {
                 messageFromServer=bufferedReader.readLine();
-
+                snakes=messageFromServer.split("&")[0];
+                foods=messageFromServer.split("&")[1];
+                System.out.println(messageFromServer);
             }catch (IOException e){
                 closeEverithing(socket,bufferedWriter,bufferedReader);
             }
@@ -85,6 +88,16 @@ public class Client {
 
     public String getMessageFromServer(){
         return messageFromServer;
+    }
+    public String getFoods(){
+        return foods;
+    }
+    public String getSnakes(){
+        return snakes;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public static void main(String [] args) throws IOException {

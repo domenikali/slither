@@ -9,19 +9,11 @@ public class Snake {
     private LinkedList<SnakeBodyPart> body;
     private int position;
     private int startSize=5;
-
     private Direction direction;
-
     private boolean isAccelerating;
-
-
-    private int speed=2;  // Nouvelle variable pour stocker la vitesse actuelle
-    private   int initialSpeed = 2;
-
+    private int speed=5;  // Nouvelle variable pour stocker la vitesse actuelle
+    private   int initialSpeed = 5;
     private int mouseX, mouseY;
-
-
-
 
     public Snake(int position,Direction d){
         this.direction=d;
@@ -47,7 +39,6 @@ public class Snake {
         mouseX = 0;
         mouseY = 0;
     }
-
 
     public void move2(Direction direction){
 
@@ -90,8 +81,6 @@ public class Snake {
             // Diminution linéaire de la vitesse lorsque l'accélération est désactivée
             speed -= 1;
         }
-
-
     }
 
     public void move(int mouseX, int mouseY) {
@@ -124,11 +113,11 @@ public class Snake {
         body.addLast(newBodyLast);
     }
 
-    public boolean collisionsWithFood(Food food) {
-        return body.get(0).getX() < food.getX() + food.getSize() &&
-                body.get(0).getX() + 10 > food.getX() &&
-                body.get(0).getY() < food.getY() + food.getSize() &&
-                body.get(0).getY() + 10 > food.getY();
+    public boolean collisionsWithFood(Pair food) {
+        return body.getFirst().getX() < food.getX() + 10 &&
+                body.getFirst().getX() + 10 > food.getX() &&
+                body.getFirst().getY() < food.getY() + 10 &&
+                body.getFirst().getY() + 10 > food.getY();
     }
 
     public int collisionsWithBody() {

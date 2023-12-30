@@ -72,7 +72,6 @@ public class ClientHandler implements Runnable{
             bufferedWriter.newLine();
             bufferedWriter.flush();
         }catch (IOException ignore){
-
         }
     }
 
@@ -100,7 +99,7 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    public static List<ClientHandler> getPlayer(){
+    public static List<ClientHandler> getPlayers(){
         return clientHandlers;
     }
 

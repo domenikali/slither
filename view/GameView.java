@@ -11,6 +11,8 @@ import model.Food;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class GameView extends JPanel {
 
@@ -65,16 +67,21 @@ public class GameView extends JPanel {
             g.drawImage(background, 0, 0, 1100, 600, this);
             if(client.getMessageFromServer()!=null) {
 
-                List<Pair> snakePos = Serialize.deserializeSnake(client.getMessageFromServer());
 
-                int decalageX = getWidth() / 2 - snakePos.get(0).getX();
-                int decalageY = getHeight() / 2 - snakePos.get(0).getY();
+                Map<String,List<Pair>> snakes = Serialize.deserializeSnakes(client.getSnakes());
+                List<Pair> foods = Serialize.deserializeSnake(client.getFoods());
+                int decalageX = 0;
+                int decalageY =0;
+                decalageX = getWidth() / 2 - snakes.get(client.getUserName()).getFirst().getX();
+                decalageY = getHeight() / 2 - snakes.get(client.getUserName()).getFirst().getY();
+                for(Map.Entry<String,List<Pair>> entry : snakes.entrySet()) {
+                    List<Pair> snakePos = entry.getValue();
 
-                for (int i = 0; i < snakePos.size(); i++) {
-                    int x = snakePos.get(i).getX() + decalageX;
-                    int y = snakePos.get(i).getY() + decalageY;
-                    g.drawImage(snakeImage, x, y, 15, 15, this);
-
+                    for (int i = 0; i < snakePos.size(); i++) {
+                        int x = snakePos.get(i).getX() + decalageX;
+                        int y = snakePos.get(i).getY() + decalageY;
+                        g.drawImage(snakeImage, x, y, 15, 15, this);
+                    }
                 }
 
             /*
@@ -93,21 +100,27 @@ public class GameView extends JPanel {
             }
 
              */
-                timerLabel.setText("Time: " + gc.getGp().getRemainingTime() + "s");
+                //timerLabel.setText("Time: " + gc.getGp().getRemainingTime() + "s");
 
                 g.setColor(Color.WHITE);
                 g.setFont(new Font("Arial", Font.PLAIN, 16));
-                g.drawString("Score: " + gc.getGp().getScore(), 10, 20);
+                g.drawString("Score: " + (snakes.get(client.getUserName()).size()-5), 10, 20);
 
+                for(int i=0;i<foods.size();i++){
+                    g.drawImage(foodImage[foods.get(i).getX()%4],foods.get(i).getX()+decalageX,foods.get(i).getY()+decalageY,10,10,this);
+                }
                 //using a standard for loop fix the ConcurrentModificationException
+                /*
                 for (int i = 0; i < gc.getGp().getFoods().size(); i++) {
                     Food food = gc.getGp().getFoods().get(i);
-                    int x = food.getX() + decalageX;
-                    int y = food.getY() + decalageY;
+                    int x = food.getX() ;
+                    int y = food.getY() ;
 
                     g.drawImage(foodImage[food.getColor()], x, y, 10, 10, this);
                 }
 
+                 */
+                /*
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setColor(Color.WHITE);
                 g2d.setStroke(new BasicStroke(3)); // Épaisseur de la ligne
@@ -115,6 +128,8 @@ public class GameView extends JPanel {
                 g2d.drawLine(1550 + decalageX, -100 + decalageY, 1550 + decalageX, 1550 + decalageY);
                 g2d.drawLine(decalageX, -100 + decalageY, decalageX, 1550 + decalageY);
                 g2d.drawLine(decalageX, 1550 + decalageY, 1550 + decalageX, 1550 + decalageY);
+
+                 */
 
             }
         }else{

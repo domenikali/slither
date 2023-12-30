@@ -166,7 +166,7 @@ public class GamePlane {
         gameTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                checkFoodCollision();
+                //checkFoodCollision();
             }
         }, 0, 1);
 
@@ -188,7 +188,7 @@ public class GamePlane {
         foods.add(food);
     }
 
-    public void checkFoodCollision() {
+    /*public void checkFoodCollision() {
         for (int i = foods.size() - 1; i >= 0; i--) {
             Food food = foods.get(i);
             if (snake.collisionsWithFood(food)) {
@@ -204,6 +204,8 @@ public class GamePlane {
             }
         }
     }
+
+     */
     public boolean checkBodyCollision(){
         return snake.getBody().get(0).getX() <= 0 || snake.getBody().get(0).getX() >= 1533 || snake.getBody().get(0).getY() >= 1533 || snake.getBody().get(0).getY() <= -100;
     }

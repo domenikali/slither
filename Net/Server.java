@@ -14,7 +14,6 @@ public class Server {
 
     private final ServerSocket serverSocket;
     private final List<ClientHandler> clinetHandlers;
-
     private GameServer gameServer;
 
     public Server(ServerSocket serverSocket) {
@@ -69,8 +68,10 @@ public class Server {
                 Thread t= new Thread(()-> gameServer.update());
                 t.start();
                 t.join();
-                long finish = System.currentTimeMillis();
-                Thread.sleep(17-(finish-start));
+                long finish = System.currentTimeMillis()-start;
+
+                if(finish<16)
+                    Thread.sleep(17-(finish));
             }catch (InterruptedException ignore){
             }
         }

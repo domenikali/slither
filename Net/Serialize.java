@@ -3,9 +3,7 @@ package Net;
 import model.Pair;
 import model.Snake;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Serialize {
 
@@ -33,12 +31,24 @@ public class Serialize {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(player.getKey().getClientUserNamme());
         stringBuilder.append(",");
-        for(int i=0;i<player.getValue().getBody().size();i++){
+        for(int i=0;i<player.getValue().getBody().size()-1;i++){
             stringBuilder.append(player.getValue().getBody().get(i).toString());
             stringBuilder.append(",");
         }
+        stringBuilder.append(player.getValue().getBody().get(player.getValue().getBody().size()-1));
         return stringBuilder.toString();
     }
+
+    public static  Map<String,List<Pair>> deserializeSnakes(String snakes){
+        String [] tokens=snakes.split(";");
+        Map<String,List<Pair>> snakeMap = new HashMap<>();
+        for(int i=0;i<tokens.length;i++){
+            snakeMap.put(tokens[i].split(",")[0],deserializeSnake(tokens[i]));
+
+        }
+        return snakeMap;
+    }
+
     public static List<Pair> deserializeSnake(String str){
         List<Pair> snakeCoordinate=new ArrayList<>();
 
@@ -47,9 +57,6 @@ public class Serialize {
             String []coordinates=tokens[i].replaceAll("[()]","").split(":");
             snakeCoordinate.add(new Pair(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1])));
         }
-        System.out.println(tokens[0]);
-        for(int i=0;i<snakeCoordinate.size();i++)
-            System.out.print(snakeCoordinate.get(i).toString());
         return snakeCoordinate;
     }
 
