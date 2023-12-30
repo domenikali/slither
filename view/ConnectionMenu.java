@@ -57,10 +57,11 @@ public class ConnectionMenu extends JFrame {
                     Client client = new Client(socket,username);
                     new Thread(client::listenForMessage).start();
                     new Thread(client::sendMessage).start();
+                    new GameWindow(false,client); // Lance la fenêtre du jeu
                 }catch (IOException ignore){
 
                 }
-                new GameWindow(false,client); // Lance la fenêtre du jeu
+
             }
         });
 

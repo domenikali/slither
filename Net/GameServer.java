@@ -1,10 +1,9 @@
 package Net;
 
+import model.Pair;
 import model.Snake;
 
-import java.sql.ClientInfoStatus;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class GameServer {
@@ -14,8 +13,11 @@ public class GameServer {
     private int newX;
     private int newY;
 
-    public GameServer(){
+    private Server server;
+
+    public GameServer(Server server){
         players= new HashMap<>();
+        this.server = server;
 
     }
 
@@ -26,13 +28,23 @@ public class GameServer {
         players.put(clientHandler,snake);
     }
     public void update(){
-        for(Map.Entry<ClientHandler,Snake> entry: players.entrySet()){
-            stringToPos(entry.getKey().getNewPos());
-            entry.getValue().move(newX,newY);
+        if(!players.isEmpty()){
+            for(Map.Entry<ClientHandler,Snake> entry: players.entrySet()){
+                if(entry.getKey().getNewPos()==null)
+                    continue;
+                stringToPos(entry.getKey().getNewPos(),entry.getKey().getClientUserNamme());
+                entry.getValue().move(newX,newY);
+                server.sendMessage(Serialize.serializePlayerSnake(entry));
+            }
         }
     }
 
-    private void stringToPos(String newPos) {
-
+    private void stringToPos(String newPos,String username) {
+        String temp =Serialize.removeUsername(newPos,username);
+        Pair p =Serialize.deserializePlayerPos(temp);
+        newX=p.getX();
+        newY=p.getY();
     }
+
+
 }

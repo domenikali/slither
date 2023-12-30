@@ -2,18 +2,15 @@ package view;
 
 
 import Net.Client;
+import model.Pair;
+import Net.Serialize;
 import controller.GameController;
 import model.Food;
 
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.Random;
+import java.util.List;
 
 public class GameView extends JPanel {
 
@@ -28,11 +25,16 @@ public class GameView extends JPanel {
 
     private JLabel timerLabel;
 
+    private Client client;
+
 
 
 
     public GameView(Boolean b, Client client) {
+        //System.out.println(client.toString());
+        this.client=client;
         this.gc=new GameController(b,this,client);
+
         this.modePvsP=b;
         background = new ImageIcon(this.getClass().getResource("/ressources/background.PNG")).getImage();
         snakeImage=new ImageIcon(this.getClass().getResource("/ressources/serpent.png")).getImage();
@@ -61,8 +63,21 @@ public class GameView extends JPanel {
         if(!modePvsP) {
             super.paintComponent(g);
             g.drawImage(background, 0, 0, 1100, 600, this);
+            if(client.getMessageFromServer()!=null) {
 
+                List<Pair> snakePos = Serialize.deserializeSnake(client.getMessageFromServer());
 
+                int decalageX = getWidth() / 2 - snakePos.get(0).getX();
+                int decalageY = getHeight() / 2 - snakePos.get(0).getY();
+
+                for (int i = 0; i < snakePos.size(); i++) {
+                    int x = snakePos.get(i).getX() + decalageX;
+                    int y = snakePos.get(i).getY() + decalageY;
+                    g.drawImage(snakeImage, x, y, 15, 15, this);
+
+                }
+
+            /*
             // Calcul des décalages pour centrer le serpent
             int decalageX = getWidth() / 2 - gc.getGp().getSnake().getBody().get(0).getX();
             int decalageY = getHeight() / 2 - gc.getGp().getSnake().getBody().get(0).getY();
@@ -76,30 +91,32 @@ public class GameView extends JPanel {
 
 
             }
-            timerLabel.setText("Time: " + gc.getGp().getRemainingTime() + "s");
 
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.PLAIN, 16));
-            g.drawString("Score: " + gc.getGp().getScore(), 10, 20);
+             */
+                timerLabel.setText("Time: " + gc.getGp().getRemainingTime() + "s");
 
-            //using a standard for loop fix the ConcurrentModificationException
-            for (int i = 0; i < gc.getGp().getFoods().size(); i++) {
-                Food food = gc.getGp().getFoods().get(i);
-                int x = food.getX() + decalageX;
-                int y = food.getY() + decalageY;
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.PLAIN, 16));
+                g.drawString("Score: " + gc.getGp().getScore(), 10, 20);
 
-                g.drawImage(foodImage[food.getColor()], x, y, 10, 10, this);
+                //using a standard for loop fix the ConcurrentModificationException
+                for (int i = 0; i < gc.getGp().getFoods().size(); i++) {
+                    Food food = gc.getGp().getFoods().get(i);
+                    int x = food.getX() + decalageX;
+                    int y = food.getY() + decalageY;
+
+                    g.drawImage(foodImage[food.getColor()], x, y, 10, 10, this);
+                }
+
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setColor(Color.WHITE);
+                g2d.setStroke(new BasicStroke(3)); // Épaisseur de la ligne
+                g2d.drawLine(decalageX, -100 + decalageY, 1550 + decalageX, -100 + decalageY);
+                g2d.drawLine(1550 + decalageX, -100 + decalageY, 1550 + decalageX, 1550 + decalageY);
+                g2d.drawLine(decalageX, -100 + decalageY, decalageX, 1550 + decalageY);
+                g2d.drawLine(decalageX, 1550 + decalageY, 1550 + decalageX, 1550 + decalageY);
+
             }
-
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(Color.WHITE);
-            g2d.setStroke(new BasicStroke(3)); // Épaisseur de la ligne
-            g2d.drawLine( decalageX, -100 + decalageY, 1550 + decalageX, -100 + decalageY);
-            g2d.drawLine(1550 + decalageX, -100 + decalageY, 1550 + decalageX, 1550 + decalageY);
-            g2d.drawLine(decalageX, -100 + decalageY,  decalageX, 1550 + decalageY);
-            g2d.drawLine( decalageX, 1550 + decalageY, 1550 + decalageX, 1550 + decalageY);
-
-
         }else{
             super.paintComponent(g);
             g.drawImage(background, 0, 0, 1100, 600, this);

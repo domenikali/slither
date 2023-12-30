@@ -85,7 +85,7 @@ public class GamePlane {
                 @Override
                 public void run() {
                     snake.move(snake.getMouseX(), snake.getMouseY());
-                    if(checkBodyCollision()){
+                    /*if(checkBodyCollision()){
                         gameTimer.cancel();
                         foodTimer.cancel();
                         countdownTimer.cancel();
@@ -101,7 +101,7 @@ public class GamePlane {
 
                             }
                         }, 1000);
-                    }
+                    }*/
                 }
             }, 0, 50);
 

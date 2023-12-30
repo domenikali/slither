@@ -15,8 +15,8 @@ public class Snake {
     private boolean isAccelerating;
 
 
-    private int speed=5;  // Nouvelle variable pour stocker la vitesse actuelle
-    private   int initialSpeed = 5;
+    private int speed=2;  // Nouvelle variable pour stocker la vitesse actuelle
+    private   int initialSpeed = 2;
 
     private int mouseX, mouseY;
 

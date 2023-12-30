@@ -97,7 +97,9 @@ public class GameController extends MouseAdapter implements KeyListener{
         if (!modePvsP) {
             int mouseX = e.getX();
             int mouseY = e.getY();
+            //System.out.println(client.toString());
             if(client!=null){
+
                 client.write(Serialize.serializePlayerPos(mouseX,mouseY));
             }else {
                 gp.getSnake().setMouseX(mouseX);

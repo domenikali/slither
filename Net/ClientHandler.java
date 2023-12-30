@@ -35,8 +35,6 @@ public class ClientHandler implements Runnable{
 
     }
 
-
-
     public void receiveMessage(){
         String messageFromClinet;
 
@@ -44,9 +42,11 @@ public class ClientHandler implements Runnable{
             try{
                 messageFromClinet = bufferedReader.readLine();
                 newPos=messageFromClinet;
-                System.out.println(messageFromClinet);
+                //System.out.println(messageFromClinet);
             }catch (IOException e){
+
                 closeEverything(socket,bufferedWriter,bufferedReader);
+
                 break;
             }
         }
@@ -98,6 +98,10 @@ public class ClientHandler implements Runnable{
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public static List<ClientHandler> getPlayer(){
+        return clientHandlers;
     }
 
     public String getClientUserNamme() {

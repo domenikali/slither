@@ -14,6 +14,8 @@ public class Client {
     private BufferedWriter bufferedWriter;
     private String userName;
 
+    private String messageFromServer;
+
     public Client (Socket socket,String userName){
         try{
             this.socket = socket;
@@ -45,7 +47,7 @@ public class Client {
     public void write(String str){
         if (socket.isConnected()){
             try {
-                bufferedWriter.write(userName + ": " + str);
+                bufferedWriter.write(userName + "-" + str);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }catch (IOException ignore){
@@ -70,15 +72,19 @@ public class Client {
     }
 
     public void listenForMessage(){
-        String msgFromServer;
+
         while (socket.isConnected()){
             try {
-                msgFromServer=bufferedReader.readLine();
-                System.out.println(msgFromServer);
+                messageFromServer=bufferedReader.readLine();
+
             }catch (IOException e){
                 closeEverithing(socket,bufferedWriter,bufferedReader);
             }
         }
+    }
+
+    public String getMessageFromServer(){
+        return messageFromServer;
     }
 
     public static void main(String [] args) throws IOException {
