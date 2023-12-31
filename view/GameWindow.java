@@ -8,6 +8,8 @@ import model.Snake;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 public class GameWindow extends JFrame {
@@ -28,6 +30,16 @@ public class GameWindow extends JFrame {
         addMouseMotionListener(g.getGc());
 
         setVisible(true);
+        addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                //client.write("CLIENT:"+client.getUserName()+" hasLeft");
+                client.close();
+                e.getWindow().dispose();
+            }
+        });
     }
     public static int  getWindowWidth(){
         return  1100;

@@ -1,7 +1,6 @@
 package Net;
 
 import view.ConnectionMenu;
-import view.MenuFrame;
 
 import java.io.*;
 import java.net.Socket;
@@ -18,13 +17,15 @@ public class Client {
     private String messageFromServer;
 
     public Client (Socket socket,String userName){
+        System.out.println("Trying to connect...");
         try{
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.userName=userName;
+            System.out.println("Connected to server "+socket.getInetAddress());
         }catch (IOException e){
-            closeEverithing( socket, bufferedWriter, bufferedReader);
+            closeEverything( socket, bufferedWriter, bufferedReader);
         }
     }
 
@@ -35,13 +36,14 @@ public class Client {
             bufferedWriter.flush();
             Scanner scanner = new Scanner(System.in);
             while (socket.isConnected()){
-                String messgaeToSend = scanner.nextLine();
-                bufferedWriter.write(userName +": " + messgaeToSend);
+                String messageToSend = scanner.nextLine();
+                bufferedWriter.write(userName +": " + messageToSend);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }
+
         }catch (IOException e){
-            closeEverithing(socket,bufferedWriter,bufferedReader);
+            closeEverything(socket,bufferedWriter,bufferedReader);
         }
     }
 
@@ -59,7 +61,7 @@ public class Client {
         }
     }
 
-    public void closeEverithing(Socket socket,BufferedWriter bufferedWriter,BufferedReader bufferedReader) {
+    public void closeEverything(Socket socket, BufferedWriter bufferedWriter, BufferedReader bufferedReader) {
         try {
             if (socket != null)
                 socket.close();
@@ -77,13 +79,23 @@ public class Client {
         while (socket.isConnected()){
             try {
                 messageFromServer=bufferedReader.readLine();
+                if(messageFromServer.contains("SERVER")){
+                    System.out.println(messageFromServer);
+                    continue;
+                }
                 snakes=messageFromServer.split("&")[0];
                 foods=messageFromServer.split("&")[1];
-                System.out.println(messageFromServer);
+
             }catch (IOException e){
-                closeEverithing(socket,bufferedWriter,bufferedReader);
+                closeEverything(socket,bufferedWriter,bufferedReader);
             }
         }
+
+
+    }
+    public void close(){
+        System.out.println("SERVER: bye!");
+        closeEverything(socket,bufferedWriter,bufferedReader);
     }
 
     public String getMessageFromServer(){
@@ -101,14 +113,8 @@ public class Client {
     }
 
     public static void main(String [] args) throws IOException {
-        new ConnectionMenu().setVisible(true);/*
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("enter username for chat");
-        String username = scanner.nextLine();
-        Socket socket = new Socket("localhost",1234);
-        Client client = new Client(socket,username);
-        new Thread(client::listenForMessage).start();
-        new Thread(client::sendMessage).start();*/
+        new ConnectionMenu().setVisible(true);
+
     }
 }
 

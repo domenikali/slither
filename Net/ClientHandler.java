@@ -16,8 +16,11 @@ public class ClientHandler implements Runnable{
 
     private String newPos;
 
+    private boolean isAlive;
+
     public ClientHandler(Socket socket) {
         try {
+            this.isAlive=true;
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -41,10 +44,13 @@ public class ClientHandler implements Runnable{
         while (socket.isConnected()){
             try{
                 messageFromClinet = bufferedReader.readLine();
+                if(messageFromClinet==null) {
+                    System.out.println("SERVER: \""+clientUserNamme+"\" disconnected");
+                    closeEverything(socket, bufferedWriter, bufferedReader);
+                }
                 newPos=messageFromClinet;
                 //System.out.println(messageFromClinet);
             }catch (IOException e){
-
                 closeEverything(socket,bufferedWriter,bufferedReader);
 
                 break;
@@ -82,11 +88,12 @@ public class ClientHandler implements Runnable{
     }
     public void removeClientHandler(){
         clientHandlers.remove(this);
-        brodcastMessage("SERVER: " + clientUserNamme + " has left the chat");
+        brodcastMessage("SERVER: \"" + clientUserNamme + "\" has left");
     }
 
     public void closeEverything(Socket socket, BufferedWriter bufferedWriter, BufferedReader bufferedReader) {
         removeClientHandler();
+        this.isAlive=false;
         try {
             if (socket != null)
                 socket.close();
@@ -97,6 +104,9 @@ public class ClientHandler implements Runnable{
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+    public boolean isAlive(){
+        return isAlive;
     }
 
     public static List<ClientHandler> getPlayers(){

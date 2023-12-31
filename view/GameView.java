@@ -12,22 +12,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 public class GameView extends JPanel {
 
-    private GameController gc;
-    private Image background;
+    private final GameController gc;
+    private final Image background;
 
     private boolean modePvsP;
 
-    private Image[] foodImage;
-    private Image snakeImage;
-    private Image snake2Image;
+    private final Image[] foodImage;
+    private final Image snakeImage;
+    private final Image snake2Image;
 
-    private JLabel timerLabel;
+    private final JLabel timerLabel;
 
-    private Client client;
+    private final Client client;
 
 
 
@@ -38,14 +39,14 @@ public class GameView extends JPanel {
         this.gc=new GameController(b,this,client);
 
         this.modePvsP=b;
-        background = new ImageIcon(this.getClass().getResource("/ressources/background.PNG")).getImage();
-        snakeImage=new ImageIcon(this.getClass().getResource("/ressources/serpent.png")).getImage();
-        snake2Image=new ImageIcon(this.getClass().getResource("/ressources/serpent2.png")).getImage();
+        background = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/ressources/background.PNG"))).getImage();
+        snakeImage=new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/ressources/serpent.png"))).getImage();
+        snake2Image=new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/ressources/serpent2.png"))).getImage();
         foodImage=new Image[4];
-        foodImage[0] = new ImageIcon(this.getClass().getResource("/ressources/food.png")).getImage();
-        foodImage[1] = new ImageIcon(this.getClass().getResource("/ressources/food1.png")).getImage();
-        foodImage[2] = new ImageIcon(this.getClass().getResource("/ressources/food2.png")).getImage();
-        foodImage[3] = new ImageIcon(this.getClass().getResource("/ressources/food3.png")).getImage();
+        foodImage[0] = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/ressources/food.png"))).getImage();
+        foodImage[1] = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/ressources/food1.png"))).getImage();
+        foodImage[2] = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/ressources/food2.png"))).getImage();
+        foodImage[3] = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/ressources/food3.png"))).getImage();
 
         timerLabel = new JLabel();
         timerLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -70,29 +71,29 @@ public class GameView extends JPanel {
 
                 Map<String,List<Pair>> snakes = Serialize.deserializeSnakes(client.getSnakes());
                 List<Pair> foods = Serialize.deserializeSnake(client.getFoods());
-                int decalageX = 0;
-                int decalageY =0;
-                decalageX = getWidth() / 2 - snakes.get(client.getUserName()).getFirst().getX();
-                decalageY = getHeight() / 2 - snakes.get(client.getUserName()).getFirst().getY();
+                int offsetX = 0;
+                int offsetY =0;
+                offsetX = getWidth() / 2 - snakes.get(client.getUserName()).get(0).getX();
+                offsetY = getHeight() / 2 - snakes.get(client.getUserName()).get(0).getY();
                 for(Map.Entry<String,List<Pair>> entry : snakes.entrySet()) {
                     List<Pair> snakePos = entry.getValue();
 
                     for (int i = 0; i < snakePos.size(); i++) {
-                        int x = snakePos.get(i).getX() + decalageX;
-                        int y = snakePos.get(i).getY() + decalageY;
+                        int x = snakePos.get(i).getX() + offsetX;
+                        int y = snakePos.get(i).getY() + offsetY;
                         g.drawImage(snakeImage, x, y, 15, 15, this);
                     }
                 }
 
             /*
             // Calcul des décalages pour centrer le serpent
-            int decalageX = getWidth() / 2 - gc.getGp().getSnake().getBody().get(0).getX();
-            int decalageY = getHeight() / 2 - gc.getGp().getSnake().getBody().get(0).getY();
+            int offsetX = getWidth() / 2 - gc.getGp().getSnake().getBody().get(0).getX();
+            int offsetY = getHeight() / 2 - gc.getGp().getSnake().getBody().get(0).getY();
 
             // Dessin du fond en fonction des décalages
             for (int i = 0; i < gc.getGp().getSnake().getBody().size(); i++) {
-                int x = gc.getGp().getSnake().getBody().get(i).getX() + decalageX;
-                int y = gc.getGp().getSnake().getBody().get(i).getY() + decalageY;
+                int x = gc.getGp().getSnake().getBody().get(i).getX() + offsetX;
+                int y = gc.getGp().getSnake().getBody().get(i).getY() + offsetY;
 
                 g.drawImage(snakeImage, x, y, 15, 15, this);
 
@@ -107,7 +108,7 @@ public class GameView extends JPanel {
                 g.drawString("Score: " + (snakes.get(client.getUserName()).size()-5), 10, 20);
 
                 for(int i=0;i<foods.size();i++){
-                    g.drawImage(foodImage[foods.get(i).getX()%4],foods.get(i).getX()+decalageX,foods.get(i).getY()+decalageY,10,10,this);
+                    g.drawImage(foodImage[foods.get(i).getX()%4],foods.get(i).getX()+offsetX,foods.get(i).getY()+offsetY,10,10,this);
                 }
                 //using a standard for loop fix the ConcurrentModificationException
                 /*
@@ -124,10 +125,10 @@ public class GameView extends JPanel {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setColor(Color.WHITE);
                 g2d.setStroke(new BasicStroke(3)); // Épaisseur de la ligne
-                g2d.drawLine(decalageX, -100 + decalageY, 1550 + decalageX, -100 + decalageY);
-                g2d.drawLine(1550 + decalageX, -100 + decalageY, 1550 + decalageX, 1550 + decalageY);
-                g2d.drawLine(decalageX, -100 + decalageY, decalageX, 1550 + decalageY);
-                g2d.drawLine(decalageX, 1550 + decalageY, 1550 + decalageX, 1550 + decalageY);
+                g2d.drawLine(offsetX, -100 + offsetY, 1550 + offsetX, -100 + offsetY);
+                g2d.drawLine(1550 + offsetX, -100 + offsetY, 1550 + offsetX, 1550 + offsetY);
+                g2d.drawLine(offsetX, -100 + offsetY, offsetX, 1550 + offsetY);
+                g2d.drawLine(offsetX, 1550 + offsetY, 1550 + offsetX, 1550 + offsetY);
 
                  */
 

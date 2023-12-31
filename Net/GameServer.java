@@ -1,20 +1,15 @@
 package Net;
 
-import model.Food;
 import model.Pair;
 import model.Snake;
 import model.SnakeBodyPart;
-
-import java.lang.reflect.Parameter;
 import java.util.*;
 
-public class GameServer {
-    private Map<ClientHandler,Snake> players;
 
-    private List<Pair> foods;
-    private int newX;
-    private int newY;
-    private Server server;
+public class GameServer {
+    private final Map<ClientHandler,Snake> players;
+    private final List<Pair> foods;
+    private final Server server;
 
 
 
@@ -35,13 +30,14 @@ public class GameServer {
     public void update(){
         if(!players.isEmpty()){
             for(Map.Entry<ClientHandler,Snake> entry: players.entrySet()){
+                if(!entry.getKey().isAlive())
+                    players.remove(entry.getKey(),entry.getValue());
                 if(entry.getKey().getNewPos()==null)
                     continue;
                 Pair newPos =stringToPos(entry.getKey().getNewPos(),entry.getKey().getClientUserNamme());
                 entry.getValue().move(newPos.getX(),newPos.getY());
                 checkFoodCollision(entry.getValue());
-
-                //server.sendMessage(Serialize.serializePlayerSnake(entry));
+                //checkPlayerCollision(entry.getValue());
             }
             sendPackeg();
         }
@@ -68,11 +64,23 @@ public class GameServer {
         for(int i=0;i<foods.size();i++){
             if(snake.collisionsWithFood(foods.get(i))){
                 snake.grow();
-                foods.remove(i);
+                foods.remove(i--);
                 for(int j=0;j<3;j++){
                     generateFood(snake.getBody().getFirst().getX(),snake.getBody().getFirst().getY());
                 }
             }
+        }
+    }
+
+    public void checkPlayerCollision(Snake snake){
+        List<SnakeBodyPart> heads = players.values().stream().map(x->x.getBody().get(0)).toList();
+        for(SnakeBodyPart head : heads){
+            if(head.equals(snake.getBody().get(0))) {
+                snake.collisionsWithBody(head,true);
+                    System.out.println("collision with himself");
+            }
+            else if(snake.collisionsWithBody(head,false))
+                System.out.println("collision");
         }
     }
 
