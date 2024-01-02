@@ -15,7 +15,6 @@ public class Client {
     private String snakes;
     private String foods;
     private String messageFromServer;
-
     public Client (Socket socket,String userName){
         System.out.println("Trying to connect...");
         try{
@@ -79,8 +78,11 @@ public class Client {
         while (socket.isConnected()){
             try {
                 messageFromServer=bufferedReader.readLine();
+                //System.out.println(messageFromServer); //uncomment for debug
                 if(messageFromServer.contains("SERVER")){
                     System.out.println(messageFromServer);
+                    if(messageFromServer.contains("SERVER: you died!"))
+                        close();
                     continue;
                 }
                 snakes=messageFromServer.split("&")[0];

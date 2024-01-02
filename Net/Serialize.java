@@ -54,7 +54,7 @@ public class Serialize {
 
         String []tokens = str.split(",");
         for(int i =1;i<tokens.length;i++){
-            String []coordinates=tokens[i].replaceAll("[()]","").split(":");
+            String []coordinates=tokens[i].split(":");
             snakeCoordinate.add(new Pair(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1])));
         }
         return snakeCoordinate;

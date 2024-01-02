@@ -39,23 +39,26 @@ public class ClientHandler implements Runnable{
     }
 
     public void receiveMessage(){
-        String messageFromClinet;
+        String messageFromClient;
 
         while (socket.isConnected()){
             try{
-                messageFromClinet = bufferedReader.readLine();
-                if(messageFromClinet==null) {
+                messageFromClient = bufferedReader.readLine();
+                if(messageFromClient==null) {
                     System.out.println("SERVER: \""+clientUserNamme+"\" disconnected");
                     closeEverything(socket, bufferedWriter, bufferedReader);
                 }
-                newPos=messageFromClinet;
-                //System.out.println(messageFromClinet);
+                newPos=messageFromClient;
             }catch (IOException e){
                 closeEverything(socket,bufferedWriter,bufferedReader);
 
                 break;
             }
         }
+    }
+
+    public void close(){
+        closeEverything(socket,bufferedWriter,bufferedReader);
     }
 
     public void brodcastMessage(String messageToSend){

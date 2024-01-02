@@ -77,6 +77,7 @@ public class GameView extends JPanel {
                 offsetY = getHeight() / 2 - snakes.get(client.getUserName()).get(0).getY();
                 for(Map.Entry<String,List<Pair>> entry : snakes.entrySet()) {
                     List<Pair> snakePos = entry.getValue();
+                    g.drawString(entry.getKey(),snakePos.getFirst().getX()+offsetX-(entry.getKey().length()*3),snakePos.getFirst().getY()+offsetY);
 
                     for (int i = 0; i < snakePos.size(); i++) {
                         int x = snakePos.get(i).getX() + offsetX;

@@ -26,6 +26,6 @@ public class SnakeBodyPart {
 
     @Override
     public String toString(){
-        return "("+x+":"+y+")";
+        return x+":"+y;
     }
 }

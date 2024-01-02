@@ -29,7 +29,9 @@ public class GameServer {
     }
     public void update(){
         if(!players.isEmpty()){
+
             for(Map.Entry<ClientHandler,Snake> entry: players.entrySet()){
+
                 if(!entry.getKey().isAlive())
                     players.remove(entry.getKey(),entry.getValue());
                 if(entry.getKey().getNewPos()==null)
@@ -69,6 +71,26 @@ public class GameServer {
                     generateFood(snake.getBody().getFirst().getX(),snake.getBody().getFirst().getY());
                 }
             }
+        }
+    }
+
+    public void die(Map.Entry<ClientHandler,Snake> player){
+        try {
+            Thread.sleep(10000);
+        }catch (InterruptedException ignore){
+
+        }
+        explode(player.getValue());
+        player.getKey().write("SERVER: you died!");
+        players.remove(player.getKey(),player.getValue());
+        player.getKey().close();
+
+    }
+
+    public void explode(Snake snake){
+        for(SnakeBodyPart snakeBodyPart : snake.getBody()){
+            foods.add(new Pair(snakeBodyPart.getX(),snakeBodyPart.getY()));
+
         }
     }
 
