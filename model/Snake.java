@@ -120,9 +120,8 @@ public class Snake {
                 body.getFirst().getY() + 10 > food.getY();
     }
 
-    public boolean collisionsWithBody(SnakeBodyPart head,boolean isSelf) {
-        int i=isSelf?5:1;
-        for (; i < body.size(); i++) {
+    public boolean collisionsWithBody(SnakeBodyPart head) {
+        for (int i=1; i < body.size(); i++) {
             if (distance(head.getX(), body.get(i).getX(), head.getY(), body.get(i).getY())<15) {
                 return true;
             }
@@ -130,9 +129,19 @@ public class Snake {
         return false;
     }
 
+    public boolean selfCollision(SnakeBodyPart head){
+        for(int i=4;i<body.size();i++){
+            int distance=distance(head.getX(), body.get(i).getX(), head.getY(), body.get(i).getY());
+            if(distance<5) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private int distance(int x1,int x2, int y1, int y2){
-        double x=Math.pow(x1,x2);
-        double y =Math.pow(y1,y2);
+        double x=Math.pow(x1-x2,2);
+        double y =Math.pow(y1-y2,2);
         return (int)Math.round(Math.sqrt(x+y));
     }
 

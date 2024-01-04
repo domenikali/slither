@@ -1,19 +1,12 @@
 package view;
 
-
-
 import Net.Client;
-import controller.GameController;
-import model.Snake;
-
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 
 public class GameWindow extends JFrame {
-
 
     public GameWindow(Boolean b, Client client){
 
@@ -22,10 +15,10 @@ public class GameWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        GameView g = new GameView(b,client);
+        ServerGameView g = new ServerGameView(b,client);
         setContentPane(g);
 
-        addKeyListener(g.getGc());
+
         addMouseListener(g.getGc());
         addMouseMotionListener(g.getGc());
 
@@ -47,10 +40,4 @@ public class GameWindow extends JFrame {
     public static int  getWindowHeight(){
         return  600;
     }
-
-
-
-
-
-
 }

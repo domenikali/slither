@@ -7,7 +7,7 @@ import java.util.*;
 
 
 public class GameServer {
-    private final Map<ClientHandler,Snake> players;
+    private volatile Map<ClientHandler,Snake> players;
     private final List<Pair> foods;
     private final Server server;
 
@@ -39,7 +39,7 @@ public class GameServer {
                 Pair newPos =stringToPos(entry.getKey().getNewPos(),entry.getKey().getClientUserNamme());
                 entry.getValue().move(newPos.getX(),newPos.getY());
                 checkFoodCollision(entry.getValue());
-                //checkPlayerCollision(entry.getValue());
+                checkPlayerCollision(entry);
             }
             sendPackeg();
         }
@@ -75,34 +75,34 @@ public class GameServer {
     }
 
     public void die(Map.Entry<ClientHandler,Snake> player){
-        try {
-            Thread.sleep(10000);
-        }catch (InterruptedException ignore){
-
-        }
-        explode(player.getValue());
         player.getKey().write("SERVER: you died!");
-        players.remove(player.getKey(),player.getValue());
         player.getKey().close();
+        explode(player.getValue());
+        players.remove(player.getKey(),player.getValue());
 
     }
 
     public void explode(Snake snake){
+        Random random = new Random();
         for(SnakeBodyPart snakeBodyPart : snake.getBody()){
-            foods.add(new Pair(snakeBodyPart.getX(),snakeBodyPart.getY()));
-
+            foods.add(new Pair(snakeBodyPart.getX()+ random.nextInt(20),snakeBodyPart.getY()+random.nextInt(20)));
         }
     }
 
-    public void checkPlayerCollision(Snake snake){
-        List<SnakeBodyPart> heads = players.values().stream().map(x->x.getBody().get(0)).toList();
+    public void checkPlayerCollision(Map.Entry<ClientHandler,Snake> playerEntry){
+        List<SnakeBodyPart> heads = new ArrayList<>();
+        Snake snake = playerEntry.getValue();
+
+        for(Map.Entry<ClientHandler,Snake> entry : players.entrySet()){
+            if(!entry.getKey().equals(playerEntry.getKey()))
+                heads.add(entry.getValue().getBody().get(0));
+        }
+        if(snake.selfCollision(snake.getBody().get(0)))
+            die(playerEntry);
+
         for(SnakeBodyPart head : heads){
-            if(head.equals(snake.getBody().get(0))) {
-                snake.collisionsWithBody(head,true);
-                    System.out.println("collision with himself");
-            }
-            else if(snake.collisionsWithBody(head,false))
-                System.out.println("collision");
+            if(snake.collisionsWithBody(head))
+                die(playerEntry);
         }
     }
 

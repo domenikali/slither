@@ -1,7 +1,6 @@
 package view;
 
 import Net.Client;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class ConnectionMenu extends JFrame {
@@ -53,7 +53,8 @@ public class ConnectionMenu extends JFrame {
                 dispose(); // Ferme la fenêtre du menu
                 String username=usernameTextBox.getText();
                 try {
-                    Socket socket = new Socket("localhost",1234);
+                    System.out.println(InetAddress.getLocalHost());
+                    Socket socket = new Socket(InetAddress.getLocalHost(),1234);
                     Client client = new Client(socket,username);
                     new Thread(client::listenForMessage).start();
                     new Thread(client::sendMessage).start();

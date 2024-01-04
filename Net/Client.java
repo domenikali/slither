@@ -92,8 +92,6 @@ public class Client {
                 closeEverything(socket,bufferedWriter,bufferedReader);
             }
         }
-
-
     }
     public void close(){
         System.out.println("SERVER: bye!");
@@ -114,9 +112,12 @@ public class Client {
         return userName;
     }
 
-    public static void main(String [] args) throws IOException {
+    public static void main(String [] args)  {
         new ConnectionMenu().setVisible(true);
+    }
 
+    public boolean isClosed(){
+        return socket.isClosed();
     }
 }
 
