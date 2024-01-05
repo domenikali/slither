@@ -113,13 +113,18 @@ public class Snake {
         body.addLast(newBodyLast);
     }
 
-    public boolean collisionsWithFood(Pair food) {
+    public boolean collisionsWithFood(Point food) {
         return body.getFirst().getX() < food.getX() + 10 &&
                 body.getFirst().getX() + 10 > food.getX() &&
                 body.getFirst().getY() < food.getY() + 10 &&
                 body.getFirst().getY() + 10 > food.getY();
     }
 
+    /**
+     * collisionsWithBody check if the head of the snake in parameter touch any part of the snake
+     * @param head first element of SnakeBodyPart list body
+     * @return true if snake touch head, false if snake don't touch head
+     */
     public boolean collisionsWithBody(SnakeBodyPart head) {
         for (int i=1; i < body.size(); i++) {
             if (distance(head.getX(), body.get(i).getX(), head.getY(), body.get(i).getY())<15) {
@@ -129,7 +134,12 @@ public class Snake {
         return false;
     }
 
-    public boolean selfCollision(SnakeBodyPart head){
+    /**
+     * selfCollision check if the head of the snake in parameter touch any part of the snake
+     * @return true if snake touch head, false if snake don't touch head
+     */
+    public boolean selfCollision(){
+        SnakeBodyPart head = getBody().get(0);
         for(int i=4;i<body.size();i++){
             int distance=distance(head.getX(), body.get(i).getX(), head.getY(), body.get(i).getY());
             if(distance<5) {
@@ -139,12 +149,15 @@ public class Snake {
         return false;
     }
 
+    /**
+     * distance calculate and return the distance from two point
+     * @return distance form two point as int
+     */
     private int distance(int x1,int x2, int y1, int y2){
         double x=Math.pow(x1-x2,2);
         double y =Math.pow(y1-y2,2);
         return (int)Math.round(Math.sqrt(x+y));
     }
-
 
     public boolean isAccelerating() {
         return isAccelerating;
@@ -154,9 +167,6 @@ public class Snake {
         isAccelerating = accelerating;
     }
 
-    public int getSpeed(){
-        return this.speed;
-    }
 
     public LinkedList<SnakeBodyPart> getBody(){
         return this.body;
@@ -168,11 +178,6 @@ public class Snake {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
-    }
-
-
-    public int getStartSize(){
-        return this.startSize;
     }
 
     public int getMouseX() {

@@ -1,11 +1,12 @@
 package Net;
 
 import view.ConnectionMenu;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
-
+/**
+ * This class handle communication with the server is connected to
+ */
 public class Client {
 
     private Socket socket;
@@ -15,6 +16,11 @@ public class Client {
     private String snakes;
     private String foods;
     private String messageFromServer;
+    /**
+     * Client constructor create a client object, initialize a BufferedReader and a BufferedWriter writing and reading from and to the server connected to the socket
+     * @param socket Socket object connected to the server
+     * @param userName String containing the username of the client
+     */
     public Client (Socket socket,String userName){
         System.out.println("Trying to connect...");
         try{
@@ -27,29 +33,26 @@ public class Client {
             closeEverything( socket, bufferedWriter, bufferedReader);
         }
     }
-
-    public void sendMessage(){
-        try {
+    /**
+     * sendMessage send the username as String to the server confirming connection
+     */
+    public void confirmConnection(){
+        try{
             bufferedWriter.write(userName);
             bufferedWriter.newLine();
             bufferedWriter.flush();
-            Scanner scanner = new Scanner(System.in);
-            while (socket.isConnected()){
-                String messageToSend = scanner.nextLine();
-                bufferedWriter.write(userName +": " + messageToSend);
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
-            }
+        }catch (IOException ignore){
 
-        }catch (IOException e){
-            closeEverything(socket,bufferedWriter,bufferedReader);
         }
     }
-
-    public void write(String str){
+    /**
+     * write send the parameter string to the server with a specific structure
+     * @param message String containing the message to send to the server
+     */
+    public void write(String message){
         if (socket.isConnected()){
             try {
-                bufferedWriter.write(userName + "-" + str);
+                bufferedWriter.write(userName + "-" + message);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }catch (IOException ignore){
@@ -59,7 +62,9 @@ public class Client {
             System.out.println("server disconnected");
         }
     }
-
+    /**
+     * closeEverything close all server related class
+     */
     public void closeEverything(Socket socket, BufferedWriter bufferedWriter, BufferedReader bufferedReader) {
         try {
             if (socket != null)
@@ -72,14 +77,16 @@ public class Client {
             e.printStackTrace();
         }
     }
-
+    /**
+     * listenForMessage read messages from server while the socket is connected everytime they get sent, it's a blocking method and need to run on a separate thread to not stop the main program
+     */
     public void listenForMessage(){
 
         while (socket.isConnected()){
             try {
                 messageFromServer=bufferedReader.readLine();
                 //System.out.println(messageFromServer); //uncomment for debug
-                if(messageFromServer.contains("SERVER")){
+                if(messageFromServer.contains("SERVER")){//skip server sent message for debug and special action like death or connection/disconnection of player
                     System.out.println(messageFromServer);
                     if(messageFromServer.contains("SERVER: you died!"))
                         close();
@@ -111,13 +118,14 @@ public class Client {
     public String getUserName() {
         return userName;
     }
+    public boolean isClosed(){
+        return socket.isClosed();
+    }
 
     public static void main(String [] args)  {
         new ConnectionMenu().setVisible(true);
     }
 
-    public boolean isClosed(){
-        return socket.isClosed();
-    }
+
 }
 

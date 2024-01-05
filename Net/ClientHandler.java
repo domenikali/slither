@@ -5,6 +5,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this class handle single client serverside, is responsible to send and receive message to and from the client
+ */
+
 public class ClientHandler implements Runnable{
     public static List<ClientHandler> clientHandlers = new ArrayList<>();
 
@@ -18,6 +22,10 @@ public class ClientHandler implements Runnable{
 
     private boolean isAlive;
 
+    /**
+     * ClientHandler constructor instantiate a BufferedReader and a BufferedWriter connected to the client through the socket and wait for a username from the client
+     * @param socket Socket connected to the client
+     */
     public ClientHandler(Socket socket) {
         try {
             this.isAlive=true;
@@ -26,7 +34,7 @@ public class ClientHandler implements Runnable{
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.clientUserNamme = bufferedReader.readLine();
             clientHandlers.add(this);
-            brodcastMessage("SERVER: " + clientUserNamme + "has entered the chat");
+            broadcastMessage("SERVER: " + clientUserNamme + "has entered the chat");
         }catch (IOException e){
             closeEverything(socket,bufferedWriter,bufferedReader);
         }
@@ -35,9 +43,10 @@ public class ClientHandler implements Runnable{
     @Override
     public void run() {
         receiveMessage();
-
     }
-
+    /**
+     * receiveMessage receive message from the client while the socket is connected
+     */
     public void receiveMessage(){
         String messageFromClient;
 
@@ -61,7 +70,11 @@ public class ClientHandler implements Runnable{
         closeEverything(socket,bufferedWriter,bufferedReader);
     }
 
-    public void brodcastMessage(String messageToSend){
+    /**
+     * broadcastMessage broadcast a message as parameter from the client to every other client
+     * @param messageToSend String
+     */
+    public void broadcastMessage(String messageToSend){
         for (ClientHandler clinetHandler : clientHandlers){
             try{
                 if(!clinetHandler.clientUserNamme.equals(clientUserNamme)){
@@ -75,6 +88,10 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /**
+     * this method write a message from the server to the client connected at this socket
+     * @param mes String message to send
+     */
     public void write (String mes){
         try {
             bufferedWriter.write(mes);
@@ -84,6 +101,9 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /**
+     * write to all client connected
+     */
     public void writeToAll(String mes){
         for(ClientHandler clientHandler: clientHandlers){
             clientHandler.write(mes);
@@ -91,7 +111,7 @@ public class ClientHandler implements Runnable{
     }
     public void removeClientHandler(){
         clientHandlers.remove(this);
-        brodcastMessage("SERVER: \"" + clientUserNamme + "\" has left");
+        broadcastMessage("SERVER: \"" + clientUserNamme + "\" has left");
     }
 
     public void closeEverything(Socket socket, BufferedWriter bufferedWriter, BufferedReader bufferedReader) {

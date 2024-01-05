@@ -1,6 +1,6 @@
 package model;
 
-public class Pair {
+public class Pair implements Point{
     int x;
     int y;
 

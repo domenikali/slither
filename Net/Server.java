@@ -10,16 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server {
-
     private final ServerSocket serverSocket;
     private final List<ClientHandler> clientHandlers;
     private final GameServer gameServer;
 
+    /**
+     * server constructor initialize clientHandlers List and the gameServer class
+     * @param serverSocket ServerSocket
+     */
     public Server(ServerSocket serverSocket) {
         clientHandlers = new ArrayList<>();
         this.serverSocket = serverSocket;
         this.gameServer=new GameServer(this);
     }
+    /**
+     * this method start accepting client asking for connection to the server, is a blocking method and should be run on another thread
+     * and creat a ClientHandler for each on a separate thread
+     */
     public void startServer() {
         System.out.println("SERVER: started\nSERVER: Waiting for connection...");
         try {
@@ -48,33 +55,42 @@ public class Server {
         }
     }
 
+    /**
+     * send message to every ClientConnected
+     * @param str String
+     */
     public void sendMessage(String str){
         for(ClientHandler clientHandler: clientHandlers){
             clientHandler.write(str);
         }
     }
 
+    /**
+     * while the server socket is connected update the position trying to maintain a stable 60 ticks
+     */
     public void respond(){
         System.out.println("SERVER: game started");
         while(!serverSocket.isClosed()){
-            try { //stable 60fps
+            try { //stable 60 ticks
                 long start = System.currentTimeMillis();
                 Thread t= new Thread(gameServer::update);
                 t.start();
                 t.join();
                 long finish = System.currentTimeMillis()-start;
 
-                if(finish<16)
+                if(finish<17) //1000/60 = aprox 17
                     Thread.sleep(17-(finish));
             }catch (InterruptedException ignore){
             }
         }
     }
-    public static void main(String[] args) throws IOException {
-        ServerSocket serversocket = new ServerSocket(1234);
-        Server server = new Server(serversocket);
-        new Thread(server::respond).start();
-        new Thread(server::startServer).start();
+    public static void main()  {
+        try {
+            ServerSocket serversocket = new ServerSocket(1234);
+            Server server = new Server(serversocket);
+            new Thread(server::respond).start();
+            new Thread(server::startServer).start();
+        }catch (IOException ignore){}
     }
 }
 

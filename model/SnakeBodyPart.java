@@ -24,6 +24,9 @@ public class SnakeBodyPart {
         this.y = y;
     }
 
+    /**
+     * this toString method need to remain as follows for the serialization of the snake
+     */
     @Override
     public String toString(){
         return x+":"+y;

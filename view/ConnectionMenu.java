@@ -22,8 +22,8 @@ public class ConnectionMenu extends JFrame {
 
         JButton join = new JButton("Join");
 
-        join.setBackground(new Color(0, 255, 0)); // Couleur verte
-        join.setForeground(Color.WHITE); // Texte blanc
+        join.setBackground(new Color(0, 255, 0));
+        join.setForeground(Color.WHITE);
         join.setFont(new Font("Arial", Font.BOLD, 20));
         join.setBounds(200, 150, 200, 50);
 
@@ -33,7 +33,7 @@ public class ConnectionMenu extends JFrame {
         usernameTextBox.setBounds(200, 230, 200, 50);
         usernameTextBox.setBackground(null);
         usernameTextBox.setBorder(null);
-        //usernameTextBox.setText("insert username");
+
         usernameTextBox.setToolTipText("your username");
         usernameTextBox.addMouseListener(new MouseAdapter(){
             @Override
@@ -49,18 +49,19 @@ public class ConnectionMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                // Fermer le menu et lancer le jeu
-                dispose(); // Ferme la fenêtre du menu
-                String username=usernameTextBox.getText();
+
+                dispose();
+                String username=usernameTextBox.getText(); //username is inserted in the textbook before clicking on join
                 try {
                     System.out.println(InetAddress.getLocalHost());
-                    Socket socket = new Socket(InetAddress.getLocalHost(),1234);
+                    Socket socket = new Socket(InetAddress.getLocalHost(),1234);//open a sever on local host on a open port
                     Client client = new Client(socket,username);
+                    client.confirmConnection();
                     new Thread(client::listenForMessage).start();
-                    new Thread(client::sendMessage).start();
-                    new GameWindow(false,client); // Lance la fenêtre du jeu
+                    new GameWindow(false,client);
                 }catch (IOException ignore){
-
+                    System.out.println("CLIENT: connection error");
+                    new MenuFrame().setVisible(true);
                 }
 
             }
@@ -78,8 +79,8 @@ public class ConnectionMenu extends JFrame {
         backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
         add(backgroundLabel);
 
-        getContentPane().setBackground(Color.BLACK); // Fond noir
-        setLocationRelativeTo(null); // Centrer la fenêtre sur l'écran
+        getContentPane().setBackground(Color.BLACK);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 }
