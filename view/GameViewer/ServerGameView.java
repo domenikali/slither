@@ -4,8 +4,6 @@ import Net.Client;
 import model.Pair;
 import Net.Serialize;
 import controller.GameController;
-import view.ConnectionMenu;
-import view.GameViewer.GameView;
 import view.MenuFrame;
 
 import javax.swing.*;
@@ -36,7 +34,6 @@ public class ServerGameView extends GameView {
         foodImage[3] = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/ressources/food3.png"))).getImage();
     }
 
-
     public void paintComponent(Graphics g) {
 
             //disconnect if the client is closed
@@ -62,7 +59,7 @@ public class ServerGameView extends GameView {
                 //paint every snake
                 for (Map.Entry<String, List<Pair>> entry : snakes.entrySet()) {
                     List<Pair> snakePos = entry.getValue();
-                    g.drawString(entry.getKey(), snakePos.getFirst().getX() + offsetX - (entry.getKey().length() * 3), snakePos.getFirst().getY() + offsetY);
+                    g.drawString(entry.getKey(), snakePos.get(0).getX() + offsetX - (entry.getKey().length() * 3), snakePos.get(0).getY() + offsetY);
 
                     for (int i = 0; i < snakePos.size(); i++) {
                         int x = snakePos.get(i).getX() + offsetX;

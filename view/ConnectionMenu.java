@@ -25,23 +25,39 @@ public class ConnectionMenu extends JFrame {
         join.setBackground(new Color(0, 255, 0));
         join.setForeground(Color.WHITE);
         join.setFont(new Font("Arial", Font.BOLD, 20));
-        join.setBounds(200, 150, 200, 50);
+        join.setBounds(200, 230, 200, 50);
 
         add(join);
 
+        JTextField hostAdress = new JTextField("localhost");
+        hostAdress.setBounds(230,120,140,20);
+        hostAdress.setBackground(null);
+        hostAdress.setBorder(null);
+        hostAdress.setFont(new Font("Arial", Font.BOLD, 10));
+        hostAdress.setHorizontalAlignment(JTextField.CENTER);
+
+        hostAdress.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                hostAdress.setText("");
+            }
+        });
+        add(hostAdress);
+
         JTextField usernameTextBox=new JTextField("your username");
-        usernameTextBox.setBounds(200, 230, 200, 50);
+        usernameTextBox.setBounds(200, 160, 200, 50);
         usernameTextBox.setBackground(null);
         usernameTextBox.setBorder(null);
-
         usernameTextBox.setToolTipText("your username");
+        usernameTextBox.setFont(new Font("Arial", Font.BOLD, 20));
+        usernameTextBox.setHorizontalAlignment(JTextField.CENTER);
         usernameTextBox.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
                 usernameTextBox.setText("");
             }
         });
-        add(usernameTextBox);
+        add(usernameTextBox,BorderLayout.CENTER);
 
 
 
@@ -52,9 +68,10 @@ public class ConnectionMenu extends JFrame {
 
                 dispose();
                 String username=usernameTextBox.getText(); //username is inserted in the textbook before clicking on join
+                String hostAdressString = hostAdress.getText();
                 try {
                     System.out.println(InetAddress.getLocalHost());
-                    Socket socket = new Socket(InetAddress.getLocalHost(),1234);//open a sever on local host on a open port
+                    Socket socket = new Socket(InetAddress.getByName(hostAdressString),1234);//open a sever on local host on a open port
                     Client client = new Client(socket,username);
                     client.confirmConnection();
                     new Thread(client::listenForMessage).start();
