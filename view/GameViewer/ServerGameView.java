@@ -78,6 +78,14 @@ public class ServerGameView extends GameView {
                     //change color depending on x value, gives the impression of randomness in color
                     g.drawImage(foodImage[foods.get(i).getX() % 4], foods.get(i).getX() + offsetX, foods.get(i).getY() + offsetY, 10, 10, this);
                 }
+                //borders
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setColor(Color.WHITE);
+                g2d.setStroke(new BasicStroke(3));
+                g2d.drawLine( 10000+offsetX, -10000 + offsetY, 10000 + offsetX, 10000 + offsetY);
+                g2d.drawLine(10000 + offsetX, -10000 + offsetY, -10000 + offsetX, -10000 + offsetY);
+                g2d.drawLine(-10000+offsetX, -10000 + offsetY,  -10000+offsetX, 10000 + offsetY);
+                g2d.drawLine( -10000+offsetX, 10000 + offsetY, -10000 + offsetX, 10000 + offsetY);
             }
         repaint();
     }

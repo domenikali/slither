@@ -13,6 +13,9 @@ public class GameServer {
     private final List<Pair> foods;
     private final Server server;
 
+    private final int borderX = 10000;
+    public final int bordery = 10000;
+
 
     /**
      * GameServer constructor initialized player map and food list
@@ -53,6 +56,7 @@ public class GameServer {
                 entry.getValue().move(newPos.getX(),newPos.getY());
                 checkFoodCollision(entry.getValue());
                 checkPlayerCollision(entry);
+                checkBorder(entry);
             }
             sendPackeg();
         }
@@ -131,13 +135,26 @@ public class GameServer {
             if(!entry.getKey().equals(playerEntry.getKey()))
                 heads.add(entry.getValue().getBody().get(0));
         }
+        /*
+        //self collision rule
         if(snake.selfCollision())
             die(playerEntry);
+         */
 
         for(SnakeBodyPart head : heads){
             if(snake.collisionsWithBody(head))
                 die(playerEntry);
         }
+    }
+
+    /**
+     * check whether the play has exceeded the border
+     * @param playerEntry map entry form players map
+     */
+    public void checkBorder(Map.Entry<ClientHandler,Snake> playerEntry){
+        SnakeBodyPart head = playerEntry.getValue().getBody().get(0);
+        if (Math.abs(head.getX())>borderX||Math.abs(head.getY())>bordery)
+            die(playerEntry);
     }
 
     /**
@@ -166,5 +183,9 @@ public class GameServer {
     private Pair stringToPos(String newPos,String username) {
         String temp =Serialize.removeUsername(newPos,username);
         return Serialize.deserializePlayerPos(temp);
+    }
+
+    public Pair getBorders(){
+        return  new Pair(borderX,bordery);
     }
 }
