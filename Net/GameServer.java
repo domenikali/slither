@@ -4,6 +4,7 @@ import model.Pair;
 import model.Snake;
 import model.SnakeBodyPart;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * this class handle the game serverside, responsible for logic and update every client connected
@@ -22,7 +23,7 @@ public class GameServer {
      * @param server Server connected to the players
      * */
     public GameServer(Server server){
-        players= new HashMap<>();
+        players= new ConcurrentHashMap<>();
         foods=new ArrayList<>();
         this.server = server;
     }
@@ -46,17 +47,27 @@ public class GameServer {
      */
     public void update(){
         if(!players.isEmpty()){
-            for(Map.Entry<ClientHandler,Snake> entry: players.entrySet()){
 
-                if(!entry.getKey().isAlive())
+            Iterator<Map.Entry<ClientHandler,Snake>> iterator =players.entrySet().iterator();
+            Map.Entry<ClientHandler,Snake> entry=null;
+
+            while (iterator.hasNext()){
+                entry = iterator.next();
+
+                if(!entry.getKey().isAlive()){
                     players.remove(entry.getKey(),entry.getValue());
+                    continue;
+                }
+
                 if(entry.getKey().getNewPos()==null)
                     continue;
+
                 Pair newPos =stringToPos(entry.getKey().getNewPos(),entry.getKey().getClientUserNamme());
                 entry.getValue().move(newPos.getX(),newPos.getY());
+
                 checkFoodCollision(entry.getValue());
-                checkPlayerCollision(entry);
-                checkBorder(entry);
+                playerCollided(entry);
+                borderCollision(entry);
             }
             sendPackeg();
         }
@@ -126,8 +137,9 @@ public class GameServer {
     /**
      * this method check the collision between a player snake and other players' snake, kill the player if a collision happened
      * @param playerEntry map entry form players map
+     * @return true if a collision between player snake and another snake is detected
      */
-    public void checkPlayerCollision(Map.Entry<ClientHandler,Snake> playerEntry){
+    public boolean playerCollided(Map.Entry<ClientHandler,Snake> playerEntry){
         LinkedList<SnakeBodyPart> snakes = new LinkedList<>();
         Snake snake = playerEntry.getValue();
 
@@ -140,18 +152,25 @@ public class GameServer {
         if(snake.selfCollision())
             die(playerEntry);
          */
-        if(snake.collisionsWithBody(snakes))
+        if(snake.collisionsWithBody(snakes)){
             die(playerEntry);
+            return true;
+        }
+        return false;
     }
 
     /**
      * check whether the play has exceeded the border
      * @param playerEntry map entry form players map
+     * @return true if the player exude the borders
      */
-    public void checkBorder(Map.Entry<ClientHandler,Snake> playerEntry){
+    public boolean borderCollision(Map.Entry<ClientHandler,Snake> playerEntry){
         SnakeBodyPart head = playerEntry.getValue().getBody().get(0);
-        if (Math.abs(head.getX())>borderX||Math.abs(head.getY())>bordery)
+        if (Math.abs(head.getX())>borderX||Math.abs(head.getY())>bordery){
             die(playerEntry);
+            return true;
+        }
+        return false;
     }
 
     /**
