@@ -45,45 +45,37 @@ public class Snake {
 
     public void move2(Direction direction){
 
-        int s=speed-5;
         switch (direction) {
             case UP:
                 for (int i = body.size() - 1; i > 0; i--) {
                     body.get(i).setX(body.get(i - 1).getX());
-                    body.get(i).setY(body.get(i - 1).getY()-s);
+                    body.get(i).setY(body.get(i - 1).getY());
                 }
                 body.get(0).setY(body.get(0).getY() - speed);
                 break;
             case DOWN:
                 for (int i = body.size() - 1; i > 0; i--) {
                     body.get(i).setX(body.get(i - 1).getX());
-                    body.get(i).setY(body.get(i - 1).getY()+s);
+                    body.get(i).setY(body.get(i - 1).getY());
                 }
                 body.get(0).setY(body.get(0).getY() + speed);
                 break;
             case LEFT:
                 for (int i = body.size() - 1; i > 0; i--) {
-                    body.get(i).setX(body.get(i - 1).getX()-s);
+                    body.get(i).setX(body.get(i - 1).getX());
                     body.get(i).setY(body.get(i - 1).getY());
                 }
                 body.get(0).setX(body.get(0).getX() - speed);
                 break;
             case RIGHT:
                 for (int i = body.size() - 1; i > 0; i--) {
-                    body.get(i).setX(body.get(i - 1).getX()+s);
+                    body.get(i).setX(body.get(i - 1).getX());
                     body.get(i).setY(body.get(i - 1).getY());
                 }
                 body.get(0).setX(body.get(0).getX() + speed);
                 break;
         }
 
-        // Augmentation linéaire de la vitesse lorsque l'accélération est activée
-        if (isAccelerating && body.size()>5) {
-            speed =7;
-
-        } else {
-            speed=initialSpeed;
-        }
     }
 
     public void move(int mouseX, int mouseY) {
@@ -102,11 +94,11 @@ public class Snake {
         body.get(0).setY(newY);
 
         // Augmentation linéaire de la vitesse lorsque l'accélération est activée
-        if (isAccelerating && body.size()>5) {
-            speed =7;
+        if (isAccelerating && body.size()>5 && speed<8) {
+            speed++;
             shrink();
-        } else {
-            speed=initialSpeed;
+        } else if(speed>initialSpeed){
+            speed--;
         }
     }
 
@@ -117,7 +109,7 @@ public class Snake {
     }
 
     public void shrink(){
-        if(slow==2) {
+        if(slow==25) {
             body.removeLast();
             slow=0;
         }
