@@ -16,6 +16,8 @@ public class GamePlane {
 
     private Snake snake2;
 
+    private AISnake aiSnake;
+
     private Timer gameTimer;
     private Timer foodTimer;
 
@@ -41,16 +43,17 @@ public class GamePlane {
         this.foods = new ArrayList<>();
         this.controller=controller;
         if(!this.controller.getModePvsP()) {
+
             for (int i = 0; i < 100; i++) {
                 generateFood(1500,1500);
             }
+            this.aiSnake=new AISnake(105,Direction.DOWN,foods);
+
         }else{
+            this.snake2 = new Snake(200, Direction.LEFT);
             for (int i = 0; i < 50; i++) {
                 generateFood(1100,600);
             }
-        }
-        if(this.controller.getModePvsP()) {
-            this.snake2 = new Snake(200, Direction.LEFT);
         }
         gameStart();
     }
@@ -62,6 +65,8 @@ public class GamePlane {
                 @Override
                 public void run() {
                     snake.move(snake.getMouseX(), snake.getMouseY());
+                    aiSnake.moveAI((ArrayList<Food>) foods.clone());
+
                     if(checkBodyCollision()){
                         gameTimer.cancel();
                         foodTimer.cancel();
@@ -207,6 +212,12 @@ public class GamePlane {
                     foods.remove(i); // Supprimer la nourriture après collision
                 }
             }
+            else {
+                if(aiSnake.collisionsWithFood(food)){
+                    aiSnake.grow();
+                    foods.remove(i);
+                }
+            }
         }
     }
     public boolean checkBodyCollision(){
@@ -256,6 +267,10 @@ public class GamePlane {
 
     public Snake getSnake2() {
         return snake2;
+    }
+
+    public AISnake getAiSnake(){
+        return aiSnake;
     }
 
     public int getRemainingTime() {

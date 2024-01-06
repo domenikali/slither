@@ -166,7 +166,7 @@ public class Snake {
      * distance calculate and return the distance from two point
      * @return distance form two point as int
      */
-    private static int distance(int x1,int x2, int y1, int y2){
+    public static int distance(int x1,int x2, int y1, int y2){
         double x=Math.pow(x1-x2,2);
         double y =Math.pow(y1-y2,2);
         return (int)Math.round(Math.sqrt(x+y));

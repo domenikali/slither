@@ -43,7 +43,6 @@ public class GameWindow extends JFrame {
             public void windowClosing(WindowEvent e)
             {
 
-                System.out.println("chiusura");
                 SwingUtilities.invokeLater(MenuFrame::new);
                 if(client!=null)
                     client.close();

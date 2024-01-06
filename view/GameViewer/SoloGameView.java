@@ -51,8 +51,18 @@ public class SoloGameView extends GameView {
             int y = gc.getGp().getSnake().getBody().get(i).getY() + decalageY;
 
             g.drawImage(snakeImage, x, y, 15, 15, this);
+        }
+        Graphics2D g2d = (Graphics2D) g;
+        /*draw AI objective*/
+        g2d.setColor(Color.RED);
+        g2d.setStroke(new BasicStroke(3));
+        g2d.drawOval(gc.getGp().getAiSnake().getLookingTo().getX()+decalageX,gc.getGp().getAiSnake().getLookingTo().getY()+decalageY,15,15);
 
+        for (int i=0;i<gc.getGp().getAiSnake().getBody().size();i++){
+            int x = gc.getGp().getAiSnake().getBody().get(i).getX() + decalageX;
+            int y = gc.getGp().getAiSnake().getBody().get(i).getY() + decalageY;
 
+            g.drawImage(snakeImage, x, y, 15, 15, this);
         }
         timerLabel.setText("Time: " + gc.getGp().getRemainingTime() + "s");
 
@@ -69,7 +79,7 @@ public class SoloGameView extends GameView {
             g.drawImage(foodImage[food.getColor()], x, y, 10, 10, this);
         }
 
-        Graphics2D g2d = (Graphics2D) g;
+        //Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.WHITE);
         g2d.setStroke(new BasicStroke(3)); // Épaisseur de la ligne
         g2d.drawLine( decalageX, -100 + decalageY, 1550 + decalageX, -100 + decalageY);
