@@ -34,7 +34,7 @@ public class ClientHandler implements Runnable{
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.clientUserNamme = bufferedReader.readLine();
             clientHandlers.add(this);
-            broadcastMessage("SERVER: " + clientUserNamme + "has entered the chat");
+            //broadcastMessage("SERVER: " + clientUserNamme + "has entered the chat");
         }catch (IOException e){
             closeEverything(socket,bufferedWriter,bufferedReader);
         }

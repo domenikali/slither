@@ -122,12 +122,13 @@ public class Snake {
 
     /**
      * collisionsWithBody check if the head of the snake in parameter touch any part of the snake
-     * @param head first element of SnakeBodyPart list body
-     * @return true if snake touch head, false if snake don't touch head
+     * @param snakes LinkedList of all snakeBodyPart of all player's snake
+     * @return true if the snake touch another snake body, false if it doesn't
      */
-    public boolean collisionsWithBody(SnakeBodyPart head) {
-        for (int i=1; i < body.size(); i++) {
-            if (distance(head.getX(), body.get(i).getX(), head.getY(), body.get(i).getY())<15) {
+    public boolean collisionsWithBody(LinkedList<SnakeBodyPart> snakes) {
+        SnakeBodyPart head = body.get(0);
+        for (int i=0; i < snakes.size(); i++) {
+            if (distance(head.getX(), snakes.get(i).getX(), head.getY(), snakes.get(i).getY())<15) {
                 return true;
             }
         }
@@ -153,7 +154,7 @@ public class Snake {
      * distance calculate and return the distance from two point
      * @return distance form two point as int
      */
-    private int distance(int x1,int x2, int y1, int y2){
+    private static int distance(int x1,int x2, int y1, int y2){
         double x=Math.pow(x1-x2,2);
         double y =Math.pow(y1-y2,2);
         return (int)Math.round(Math.sqrt(x+y));

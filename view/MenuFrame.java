@@ -99,7 +99,7 @@ public class MenuFrame extends JFrame {
         startServerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Server.main();
+                Server.main(new String[]{});
                 startServerButton.setEnabled(false);
             }
         });

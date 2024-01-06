@@ -84,7 +84,7 @@ public class Server {
             }
         }
     }
-    public static void main()  {
+    public static void main(String [] args)  {
         try {
             ServerSocket serversocket = new ServerSocket(1234);
             Server server = new Server(serversocket);

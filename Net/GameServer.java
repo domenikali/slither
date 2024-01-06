@@ -124,27 +124,24 @@ public class GameServer {
     }
 
     /**
-     * this method check the collision between a player, other and itself
+     * this method check the collision between a player snake and other players' snake, kill the player if a collision happened
      * @param playerEntry map entry form players map
      */
     public void checkPlayerCollision(Map.Entry<ClientHandler,Snake> playerEntry){
-        List<SnakeBodyPart> heads = new ArrayList<>();
+        LinkedList<SnakeBodyPart> snakes = new LinkedList<>();
         Snake snake = playerEntry.getValue();
 
         for(Map.Entry<ClientHandler,Snake> entry : players.entrySet()){
             if(!entry.getKey().equals(playerEntry.getKey()))
-                heads.add(entry.getValue().getBody().get(0));
+                snakes.addAll(entry.getValue().getBody());
         }
         /*
         //self collision rule
         if(snake.selfCollision())
             die(playerEntry);
          */
-
-        for(SnakeBodyPart head : heads){
-            if(snake.collisionsWithBody(head))
-                die(playerEntry);
-        }
+        if(snake.collisionsWithBody(snakes))
+            die(playerEntry);
     }
 
     /**
