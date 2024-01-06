@@ -87,17 +87,21 @@ public class GameController extends MouseAdapter implements KeyListener {
                         gp.getSnake2().setDirection(Direction.RIGHT);
                     }
                     break;
+            }
+        }else {
+            if(KeyEvent.VK_SPACE == e.getKeyCode()){
+                gp.getSnake().setAccelerating(true);
+            }
         }
-    }
         if (KeyEvent.VK_B == e.getKeyCode()) {
-            gp.resetGame();
+             gp.resetGame();
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_A:
+            case KeyEvent.VK_SPACE:
                 gp.getSnake().setAccelerating(false);
                 break;
         }

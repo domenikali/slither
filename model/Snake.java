@@ -15,7 +15,10 @@ public class Snake {
     private   int initialSpeed = 5;
     private int mouseX, mouseY;
 
+    private int slow;
+
     public Snake(int position,Direction d){
+        this.slow=0;
         this.direction=d;
         this.position=position;
         this.mouseX=0;
@@ -75,11 +78,11 @@ public class Snake {
         }
 
         // Augmentation linéaire de la vitesse lorsque l'accélération est activée
-        if (isAccelerating && speed < 20) {
-            speed += 1;
-        } else if (!isAccelerating && speed > initialSpeed) {
-            // Diminution linéaire de la vitesse lorsque l'accélération est désactivée
-            speed -= 1;
+        if (isAccelerating && body.size()>5) {
+            speed =7;
+
+        } else {
+            speed=initialSpeed;
         }
     }
 
@@ -99,11 +102,11 @@ public class Snake {
         body.get(0).setY(newY);
 
         // Augmentation linéaire de la vitesse lorsque l'accélération est activée
-        if (isAccelerating && speed < 20) {
-            speed += 1;
-        } else if (!isAccelerating && speed > initialSpeed) {
-            // Diminution linéaire de la vitesse lorsque l'accélération est désactivée
-            speed -= 1;
+        if (isAccelerating && body.size()>5) {
+            speed =7;
+            shrink();
+        } else {
+            speed=initialSpeed;
         }
     }
 
@@ -111,6 +114,15 @@ public class Snake {
         SnakeBodyPart bodyLast = body.getLast();
         SnakeBodyPart newBodyLast = new SnakeBodyPart(bodyLast.getX(), bodyLast.getY());
         body.addLast(newBodyLast);
+    }
+
+    public void shrink(){
+        if(slow==2) {
+            body.removeLast();
+            slow=0;
+        }
+        else
+            slow++;
     }
 
     public boolean collisionsWithFood(Point food) {
