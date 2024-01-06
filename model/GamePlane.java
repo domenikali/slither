@@ -127,7 +127,7 @@ public class GamePlane {
                         gameTimer.cancel();
                         foodTimer.cancel();
                         countdownTimer.cancel();
-                        controller.getGv().showWinnerDialog("1");
+                        controller.getGv().showWinnerDialog(String.valueOf(checkSnakesBodysCollision()));
                         Timer returnToMenuTimer = new Timer();
                         returnToMenuTimer.schedule(new TimerTask() {
                             @Override
@@ -144,7 +144,7 @@ public class GamePlane {
                         gameTimer.cancel();
                         foodTimer.cancel();
                         countdownTimer.cancel();
-                        controller.getGv().showWinnerDialog("2");
+                        controller.getGv().showWinnerDialog(String.valueOf(checkBody2Collision()));
                         Timer returnToMenuTimer = new Timer();
                         returnToMenuTimer.schedule(new TimerTask() {
                             @Override
