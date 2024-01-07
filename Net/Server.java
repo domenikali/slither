@@ -23,6 +23,7 @@ public class Server {
         this.serverSocket = serverSocket;
         this.gameServer=new GameServer(this);
     }
+
     /**
      * this method start accepting client asking for connection to the server, is a blocking method and should be run on another thread
      * and creat a ClientHandler for each on a separate thread

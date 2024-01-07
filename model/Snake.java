@@ -1,7 +1,6 @@
 package model;
 import view.GameWindow;
 
-
 import java.awt.*;
 import java.util.LinkedList;
 

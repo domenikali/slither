@@ -52,7 +52,7 @@ public class ServerGameView extends GameView {
                 int offsetX = 0;
                 int offsetY = 0;
 
-                //change the offset for every player to let them view they snake at the center of the screen
+                //change the offset for every player to let them view their snake at the center of the screen
                 offsetX = getWidth() / 2 - snakes.get(client.getUserName()).get(0).getX();
                 offsetY = getHeight() / 2 - snakes.get(client.getUserName()).get(0).getY();
 
@@ -68,12 +68,12 @@ public class ServerGameView extends GameView {
                     }
                 }
 
-                //paint teh score in the right high corner
+                //paint the score in the top right corner
                 g.setColor(Color.WHITE);
                 g.setFont(new Font("Arial", Font.PLAIN, 16));
                 g.drawString("Score: " + (snakes.get(client.getUserName()).size() - 5), 10, 20);
 
-                //paint the food
+                //paint the foods
                 for (int i = 0; i < foods.size(); i++) {
                     //change color depending on x value, gives the impression of randomness in color
                     g.drawImage(foodImage[foods.get(i).getX() % 4], foods.get(i).getX() + offsetX, foods.get(i).getY() + offsetY, 10, 10, this);

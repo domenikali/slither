@@ -10,7 +10,10 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-
+/**
+ *This class extend JFrame, is the interface to join a server hosted game and enable the user to change his username
+ * and enter a specific ip for the server (for default it connect to a local hosted server)
+ */
 public class ConnectionMenu extends JFrame {
     private Client client;
     public ConnectionMenu(){
@@ -29,20 +32,20 @@ public class ConnectionMenu extends JFrame {
 
         add(join);
 
-        JTextField hostAdress = new JTextField("localhost");
-        hostAdress.setBounds(230,120,140,20);
-        hostAdress.setBackground(null);
-        hostAdress.setBorder(null);
-        hostAdress.setFont(new Font("Arial", Font.BOLD, 10));
-        hostAdress.setHorizontalAlignment(JTextField.CENTER);
-
-        hostAdress.addMouseListener(new MouseAdapter() {
+        JTextField hostAddress = new JTextField("localhost");
+        hostAddress.setBounds(230,120,140,20);
+        hostAddress.setBackground(null);
+        hostAddress.setBorder(null);
+        hostAddress.setFont(new Font("Arial", Font.BOLD, 10));
+        hostAddress.setHorizontalAlignment(JTextField.CENTER);
+        //empty the textField when it's clicked by the user (ensure a default host address)
+        hostAddress.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                hostAdress.setText("");
+                hostAddress.setText("");
             }
         });
-        add(hostAdress);
+        add(hostAddress);
 
         JTextField usernameTextBox=new JTextField("your username");
         usernameTextBox.setBounds(200, 160, 200, 50);
@@ -51,6 +54,7 @@ public class ConnectionMenu extends JFrame {
         usernameTextBox.setToolTipText("your username");
         usernameTextBox.setFont(new Font("Arial", Font.BOLD, 20));
         usernameTextBox.setHorizontalAlignment(JTextField.CENTER);
+        //empty the textField when it's clicked by the user (ensure a default username)
         usernameTextBox.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
@@ -60,18 +64,18 @@ public class ConnectionMenu extends JFrame {
         add(usernameTextBox,BorderLayout.CENTER);
 
 
-
+        //when the join button in clicked
         join.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-
                 dispose();
-                String username=usernameTextBox.getText(); //username is inserted in the textbook before clicking on join
-                String hostAdressString = hostAdress.getText();
+                String username=usernameTextBox.getText();
+                String hostAdressString = hostAddress.getText();
+
                 try {
                     System.out.println(InetAddress.getLocalHost());
-                    Socket socket = new Socket(InetAddress.getByName(hostAdressString),1234);//open a sever on local host on a open port
+                    Socket socket = new Socket(InetAddress.getByName(hostAdressString),1234);//open a sever at a specified host address at post 1234 (default port for all this project)
                     Client client = new Client(socket,username);
                     client.confirmConnection();
                     new Thread(client::listenForMessage).start();
