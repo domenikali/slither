@@ -15,6 +15,7 @@ public class SoloGameView extends GameView {
 
     private Image[] foodImage;
     private Image snakeImage;
+    private Image aisnakeImage;
 
     private JLabel timerLabel;
 
@@ -23,6 +24,8 @@ public class SoloGameView extends GameView {
         this.gc=new GameController(false,this);
         background = new ImageIcon(this.getClass().getResource("/ressources/background.PNG")).getImage();
         snakeImage=new ImageIcon(this.getClass().getResource("/ressources/serpent.png")).getImage();
+        aisnakeImage=new ImageIcon(this.getClass().getResource("/ressources/serpent2.png")).getImage();
+
         foodImage=new Image[4];
         foodImage[0] = new ImageIcon(this.getClass().getResource("/ressources/food.png")).getImage();
         foodImage[1] = new ImageIcon(this.getClass().getResource("/ressources/food1.png")).getImage();
@@ -62,7 +65,7 @@ public class SoloGameView extends GameView {
             int x = gc.getGp().getAiSnake().getBody().get(i).getX() + decalageX;
             int y = gc.getGp().getAiSnake().getBody().get(i).getY() + decalageY;
 
-            g.drawImage(snakeImage, x, y, 15, 15, this);
+            g.drawImage(aisnakeImage, x, y, 15, 15, this);
         }
         timerLabel.setText("Time: " + gc.getGp().getRemainingTime() + "s");
 
@@ -97,6 +100,17 @@ public class SoloGameView extends GameView {
 
     public GameController getGc() {
         return gc;
+    }
+    @Override
+    public void showTimeUpDialog(){
+        String winningMessage="";
+        if(getGc().getGp().getScore()>getGc().getGp().getAiSnake().getBody().size()-5)
+                winningMessage = "You won! your score is: "+getGc().getGp().getScore();
+        else
+            winningMessage = "You lost! your score is "+getGc().getGp().getScore()+" but AI scored: "+( getGc().getGp().getAiSnake().getBody().size()-5);
+
+        JOptionPane.showMessageDialog(this, winningMessage);
+
     }
 
 }

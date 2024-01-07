@@ -41,7 +41,6 @@ public class PvPGameView extends GameView {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1100, 600, this);
-        g.drawImage(snake2Image,110,110,15,15,this);
 
         for (int i = 0; i < gc.getGp().getSnake().getBody().size(); i++) {
             g.drawImage(snakeImage, gc.getGp().getSnake().getBody().get(i).getX(), gc.getGp().getSnake().getBody().get(i).getY(), 15, 15, this);
@@ -68,8 +67,5 @@ public class PvPGameView extends GameView {
     public void updateTimerLabel() {
         timerLabel.setText("Time: " + gc.getGp().getRemainingTime() + "s");
         repaint();
-
     }
-
-
 }
