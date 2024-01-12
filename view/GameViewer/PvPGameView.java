@@ -22,7 +22,7 @@ public class PvPGameView extends GameView {
 
 
     public PvPGameView() {
-        this.gc=new GameController(true,this);
+        this.gc=new GameController(true,this,false);
         background = new ImageIcon(this.getClass().getResource("/ressources/background.PNG")).getImage();
         snakeImage=new ImageIcon(this.getClass().getResource("/ressources/serpent.png")).getImage();
         snake2Image=new ImageIcon(this.getClass().getResource("/ressources/serpent2.png")).getImage();

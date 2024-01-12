@@ -27,6 +27,7 @@ public class MenuFrame extends JFrame {
         // Créer les boutons du menu
         JButton soloButton = new JButton("Solo");
         JButton pvspButton = new JButton("PvsP");
+        JButton AIButton = new JButton("AI");
         JButton quitButton = new JButton("Quit");
         JButton onlineButton = new JButton("Online");
         JButton startServerButton = new JButton("<html>start<br>server<br>");
@@ -36,6 +37,10 @@ public class MenuFrame extends JFrame {
         soloButton.setBackground(new Color(0, 255, 0)); // Couleur verte
         soloButton.setForeground(Color.WHITE); // Texte blanc
         soloButton.setFont(new Font("Arial", Font.BOLD, 20));
+
+        AIButton.setBackground(new Color(0, 255, 0)); // Couleur verte
+        AIButton.setForeground(Color.WHITE); // Texte blanc
+        AIButton.setFont(new Font("Arial", Font.BOLD, 20));
 
         onlineButton.setBackground(new Color(0, 255, 0)); // Couleur verte
         onlineButton.setForeground(Color.WHITE); // Texte blanc
@@ -56,8 +61,9 @@ public class MenuFrame extends JFrame {
 
 
         onlineButton.setBounds(200, 100, 200, 50);
-        soloButton.setBounds(200, 180, 200, 50);
-        pvspButton.setBounds(200, 260, 200, 50);
+        soloButton.setBounds(200, 160, 200, 50);
+        pvspButton.setBounds(200, 220, 200, 50);
+        AIButton.setBounds(200,280,200,50);
         quitButton.setBounds(200, 340, 200, 50);
         startServerButton.setBounds(30, 30, 50, 50);
 
@@ -68,7 +74,16 @@ public class MenuFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Fermer le menu et lancer le jeu
                 dispose(); // Ferme la fenêtre du menu
-                new GameWindow(false,null); // Lance la fenêtre du jeu
+                new GameWindow(false,null,false); // Lance la fenêtre du jeu
+            }
+        });
+
+        AIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Fermer le menu et lancer le jeu
+                dispose(); // Ferme la fenêtre du menu
+                new GameWindow(false,null,true); // Lance la fenêtre du jeu
             }
         });
 
@@ -77,7 +92,7 @@ public class MenuFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Fermer le menu et lancer le jeu
                 dispose(); // Ferme la fenêtre du menu
-                new GameWindow(true,null); // Lance la fenêtre du jeu
+                new GameWindow(true,null,false); // Lance la fenêtre du jeu
             }
         });
 
@@ -109,6 +124,7 @@ public class MenuFrame extends JFrame {
         add(quitButton);
         add(onlineButton);
         add(startServerButton);
+        add(AIButton);
 
         // Mettre en forme le menu
         JLabel titleLabel = new JLabel("Slither.io Game");

@@ -17,6 +17,7 @@ public class GameController extends MouseAdapter implements KeyListener {
 
 
     private boolean modePvsP;
+    private boolean AI;
 
     private GameView gameView;
     private Client client;
@@ -27,9 +28,10 @@ public class GameController extends MouseAdapter implements KeyListener {
     public GameController(Client client){
         this.client=client;
     }
-    public GameController(Boolean b,GameView gameView){
+    public GameController(Boolean b,GameView gameView,Boolean AI){
         this.gameView=gameView;
         modePvsP = b;
+        this.AI=AI;
         this.gp=new GamePlane(this);
         this.client=null;
     }
@@ -126,5 +128,9 @@ public class GameController extends MouseAdapter implements KeyListener {
 
     public GameView getGv() {
         return this.gameView;
+    }
+
+    public boolean isAI() {
+        return AI;
     }
 }

@@ -19,9 +19,12 @@ public class SoloGameView extends GameView {
 
     private JLabel timerLabel;
 
+    private boolean AI;
 
-    public SoloGameView() {
-        this.gc=new GameController(false,this);
+
+    public SoloGameView(boolean AI) {
+        this.AI=AI;
+        this.gc=new GameController(false,this,this.AI);
         background = new ImageIcon(this.getClass().getResource("/ressources/background.PNG")).getImage();
         snakeImage=new ImageIcon(this.getClass().getResource("/ressources/serpent.png")).getImage();
         aisnakeImage=new ImageIcon(this.getClass().getResource("/ressources/serpent2.png")).getImage();
@@ -55,18 +58,30 @@ public class SoloGameView extends GameView {
 
             g.drawImage(snakeImage, x, y, 15, 15, this);
         }
-        Graphics2D g2d = (Graphics2D) g;
-        /*draw AI objective*/
-        g2d.setColor(Color.RED);
-        g2d.setStroke(new BasicStroke(3));
-        g2d.drawOval(gc.getGp().getAiSnake().getLookingTo().getX()+decalageX,gc.getGp().getAiSnake().getLookingTo().getY()+decalageY,15,15);
 
-        for (int i=0;i<gc.getGp().getAiSnake().getBody().size();i++){
-            int x = gc.getGp().getAiSnake().getBody().get(i).getX() + decalageX;
-            int y = gc.getGp().getAiSnake().getBody().get(i).getY() + decalageY;
 
-            g.drawImage(aisnakeImage, x, y, 15, 15, this);
+            Graphics2D g2d = (Graphics2D) g;
+        if(AI) {
+            /*draw AI objective*/
+            g2d.setColor(Color.RED);
+            g2d.setStroke(new BasicStroke(3));
+            g2d.drawOval(gc.getGp().getAiSnake().getLookingTo().getX() + decalageX, gc.getGp().getAiSnake().getLookingTo().getY() + decalageY, 15, 15);
+
+            for (int i = 0; i < gc.getGp().getAiSnake().getBody().size(); i++) {
+                int x = gc.getGp().getAiSnake().getBody().get(i).getX() + decalageX;
+                int y = gc.getGp().getAiSnake().getBody().get(i).getY() + decalageY;
+
+                g.drawImage(aisnakeImage, x, y, 15, 15, this);
+            }
         }
+            //Graphics2D g2d = (Graphics2D) g;
+            g2d.setColor(Color.WHITE);
+            g2d.setStroke(new BasicStroke(3)); // Épaisseur de la ligne
+            g2d.drawLine(decalageX, -100 + decalageY, 1550 + decalageX, -100 + decalageY);
+            g2d.drawLine(1550 + decalageX, -100 + decalageY, 1550 + decalageX, 1550 + decalageY);
+            g2d.drawLine(decalageX, -100 + decalageY, decalageX, 1550 + decalageY);
+            g2d.drawLine(decalageX, 1550 + decalageY, 1550 + decalageX, 1550 + decalageY);
+
         timerLabel.setText("Time: " + gc.getGp().getRemainingTime() + "s");
 
         g.setColor(Color.WHITE);
@@ -82,13 +97,7 @@ public class SoloGameView extends GameView {
             g.drawImage(foodImage[food.getColor()], x, y, 10, 10, this);
         }
 
-        //Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.WHITE);
-        g2d.setStroke(new BasicStroke(3)); // Épaisseur de la ligne
-        g2d.drawLine( decalageX, -100 + decalageY, 1550 + decalageX, -100 + decalageY);
-        g2d.drawLine(1550 + decalageX, -100 + decalageY, 1550 + decalageX, 1550 + decalageY);
-        g2d.drawLine(decalageX, -100 + decalageY,  decalageX, 1550 + decalageY);
-        g2d.drawLine( decalageX, 1550 + decalageY, 1550 + decalageX, 1550 + decalageY);
+
 
     }
 
@@ -104,13 +113,19 @@ public class SoloGameView extends GameView {
     @Override
     public void showTimeUpDialog(){
         String winningMessage="";
+        if(AI){
         if(getGc().getGp().getScore()>getGc().getGp().getAiSnake().getBody().size()-5)
                 winningMessage = "You won! your score is: "+getGc().getGp().getScore();
         else
             winningMessage = "You lost! your score is "+getGc().getGp().getScore()+" but AI scored: "+( getGc().getGp().getAiSnake().getBody().size()-5);
 
+        }else{
+            winningMessage = "Time's up! Your score is: "+getGc().getGp().getScore();
+        }
         JOptionPane.showMessageDialog(this, winningMessage);
 
     }
+
+
 
 }

@@ -46,7 +46,18 @@ public abstract class GameView extends JPanel{
             window.dispose();
         }
     }
-    public void showWinnerDialog(String s) {
-        JOptionPane.showMessageDialog(this, "Snake "+s+ "won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+    public void showWinnerDialog(int s) {
+        JOptionPane.showMessageDialog(this, "Snake "+s+ " won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
     }
+
+    public void showWinnerDialogVSAI(int s) {
+        if(s==1){
+            JOptionPane.showMessageDialog(this, "You won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(this, "The AI won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+
+        }
+    }
+
+
 }

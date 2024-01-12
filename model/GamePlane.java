@@ -47,7 +47,9 @@ public class GamePlane {
             for (int i = 0; i < 100; i++) {
                 generateFood(1500,1500);
             }
-            this.aiSnake=new AISnake(105,Direction.DOWN,foods);
+            if(this.controller.isAI()) {
+                this.aiSnake = new AISnake(105, Direction.DOWN, foods);
+            }
 
         }else{
             this.snake2 = new Snake(200, Direction.LEFT);
@@ -60,12 +62,36 @@ public class GamePlane {
 
     public void gameStart(){
         if(!this.controller.getModePvsP()) {
-
             gameTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     snake.move(snake.getMouseX(), snake.getMouseY());
-                    aiSnake.moveAI((ArrayList<Food>) foods.clone());
+                    if(getAIMode()) {
+                        aiSnake.moveAI((ArrayList<Food>) foods.clone());
+                        gameTimer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                if (checkSnakeBodyWithAICollision() != 0) {
+                                    gameTimer.cancel();
+                                    foodTimer.cancel();
+                                    countdownTimer.cancel();
+                                    controller.getGv().showWinnerDialogVSAI(checkSnakeBodyWithAICollision());
+                                    Timer returnToMenuTimer = new Timer();
+                                    returnToMenuTimer.schedule(new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            // Revenir au menu
+                                            controller.getGv().showMenu();
+                                            controller.getGv().closeCurrentGameWindow();
+                                        }
+
+                                    }, 1000);
+                                }
+
+                            }
+                        },1);
+
+                    }
 
                     if(checkBodyCollision()){
                         gameTimer.cancel();
@@ -111,10 +137,9 @@ public class GamePlane {
                         controller.getGv().updateTimerLabel();
 
                     }
+
                 }
             }, 0, 25);  // Répéter chaque seconde
-
-
 
             foodTimer.schedule(new TimerTask() {
                 @Override
@@ -122,6 +147,9 @@ public class GamePlane {
                     generateFood(1500,1500);
                 }
             }, 0, 1000);
+
+
+
         }else{
             gameTimer.schedule(new TimerTask() {
                 @Override
@@ -132,7 +160,7 @@ public class GamePlane {
                         gameTimer.cancel();
                         foodTimer.cancel();
                         countdownTimer.cancel();
-                        controller.getGv().showWinnerDialog(String.valueOf(checkSnakesBodysCollision()));
+                        controller.getGv().showWinnerDialog(checkSnakesBodysCollision());
                         Timer returnToMenuTimer = new Timer();
                         returnToMenuTimer.schedule(new TimerTask() {
                             @Override
@@ -149,7 +177,7 @@ public class GamePlane {
                         gameTimer.cancel();
                         foodTimer.cancel();
                         countdownTimer.cancel();
-                        controller.getGv().showWinnerDialog(String.valueOf(checkBody2Collision()));
+                        controller.getGv().showWinnerDialog(checkBody2Collision());
                         Timer returnToMenuTimer = new Timer();
                         returnToMenuTimer.schedule(new TimerTask() {
                             @Override
@@ -213,9 +241,11 @@ public class GamePlane {
                 }
             }
             else {
-                if(aiSnake.collisionsWithFood(food)){
-                    aiSnake.grow();
-                    foods.remove(i);
+                if(getAIMode()) {
+                    if (aiSnake.collisionsWithFood(food)) {
+                        aiSnake.grow();
+                        foods.remove(i);
+                    }
                 }
             }
         }
@@ -242,6 +272,21 @@ public class GamePlane {
         }
         for (int i = 0; i < snake2.getBody().size(); i++) {
             if (snake.getBody().get(0).getX() == snake2.getBody().get(i).getX() && snake.getBody().get(0).getY() == snake2.getBody().get(i).getY()) {
+                return 2;
+            }
+
+        }
+        return 0;
+    }
+
+    public int checkSnakeBodyWithAICollision() {
+        for (int i = 0; i < snake.getBody().size(); i++) {
+            if (aiSnake.getBody().get(0).getX() == snake.getBody().get(i).getX() && aiSnake.getBody().get(0).getY() == snake.getBody().get(i).getY()) {
+                return 1;
+            }
+        }
+        for (int i = 0; i < aiSnake.getBody().size(); i++) {
+            if (snake.getBody().get(0).getX() == aiSnake.getBody().get(i).getX() && snake.getBody().get(0).getY() == aiSnake.getBody().get(i).getY()) {
                 return 2;
             }
 
@@ -283,5 +328,9 @@ public class GamePlane {
 
     public int getScore() {
         return score;
+    }
+
+    public Boolean getAIMode(){
+        return this.controller.isAI();
     }
 }

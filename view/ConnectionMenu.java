@@ -79,7 +79,7 @@ public class ConnectionMenu extends JFrame {
                     Client client = new Client(socket,username);
                     client.confirmConnection();
                     new Thread(client::listenForMessage).start();
-                    new GameWindow(false,client);
+                    new GameWindow(false,client,false);
                 }catch (IOException ignore){
                     System.out.println("CLIENT: connection error");
                     new MenuFrame().setVisible(true);

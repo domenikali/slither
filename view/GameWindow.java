@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 
 public class GameWindow extends JFrame {
 
-    public GameWindow(Boolean PvP, Client client){
+    public GameWindow(Boolean PvP, Client client,Boolean AI){
 
         GameView g;
 
@@ -25,10 +25,14 @@ public class GameWindow extends JFrame {
         if(client!=null)
             g = new ServerGameView(client);
         else{
-            if(PvP)
-                g=new PvPGameView();
-            else
-                g = new SoloGameView();
+            if(PvP) {
+                g = new PvPGameView();
+            }else if(AI) {
+                g = new SoloGameView(true);
+            }else{
+                g = new SoloGameView(false);
+            }
+
         }
         setContentPane(g);
 
