@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Server {
     private final ServerSocket serverSocket;
@@ -36,7 +37,7 @@ public class Server {
                 ClientHandler clientHandler = new ClientHandler(socket);
                 System.out.println("SERVER: New player connected: "+clientHandler.getClientUserNamme());
                 clientHandlers.add(clientHandler);
-                gameServer.addPlayer(clientHandler,new Snake(110, Direction.RIGHT));
+                gameServer.addPlayer(clientHandler,new Snake(startPos(), Direction.RIGHT));
                 Thread thread = new Thread(clientHandler);
                 thread.start();
             }
@@ -44,6 +45,14 @@ public class Server {
         catch(IOException ignore){
             closeServerSocket();
         }
+    }
+
+    /**
+     * set the spawn of the snake point randomly in a 200px radius
+     */
+    public int startPos (){
+        Random rand = new Random();
+        return rand.nextInt(100)+100;
     }
 
     public void closeServerSocket() {
