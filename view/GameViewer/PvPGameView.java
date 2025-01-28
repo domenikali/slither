@@ -1,26 +1,15 @@
 package view.GameViewer;
-
 import controller.GameController;
 import model.Food;
-import view.GameViewer.GameView;
-
 import javax.swing.*;
 import java.awt.*;
-
-
 public class PvPGameView extends GameView {
-
     private GameController gc;
     private Image background;
-
-
     private Image[] foodImage;
     private Image snakeImage;
     private Image snake2Image;
-
     private JLabel timerLabel;
-
-
     public PvPGameView() {
         this.gc=new GameController(true,this,false);
         background = new ImageIcon(this.getClass().getResource("/ressources/background.PNG")).getImage();
@@ -36,7 +25,6 @@ public class PvPGameView extends GameView {
         timerLabel.setForeground(Color.WHITE);
         add(timerLabel);
     }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -57,12 +45,9 @@ public class PvPGameView extends GameView {
         }
         repaint();
     }
-
-    @Override
     public GameController getGc() {
         return gc;
     }
-
     @Override
     public void updateTimerLabel() {
         timerLabel.setText("Time: " + gc.getGp().getRemainingTime() + "s");

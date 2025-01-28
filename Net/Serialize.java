@@ -3,12 +3,10 @@ package Net;
 import model.Pair;
 import model.Snake;
 import java.util.*;
-
 /**
  * this class serialize and deserialize message to and from the server
  */
 public class Serialize {
-
     /**
      * serialize the player position returning a string with the mouse position change
      * @param mousx int referring to the x of the mouse

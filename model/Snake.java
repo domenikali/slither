@@ -3,7 +3,6 @@ import view.GameWindow;
 
 import java.awt.*;
 import java.util.LinkedList;
-
 public class Snake {
     private LinkedList<SnakeBodyPart> body;
     private int position;
@@ -28,22 +27,18 @@ public class Snake {
             body.add(new SnakeBodyPart(i*position, Toolkit.getDefaultToolkit().getScreenSize().height/2));
         }
     }
-
     public void reset() {
         body.clear();
         for (int i = startSize; i > 0; i--) {
             body.add(new SnakeBodyPart(i * this.position, 10));
         }
-
         direction = Direction.RIGHT;
         isAccelerating = false;
         speed = initialSpeed;
         mouseX = 0;
         mouseY = 0;
     }
-
     public void move2(Direction direction){
-
         switch (direction) {
             case UP:
                 for (int i = body.size() - 1; i > 0; i--) {
@@ -76,14 +71,12 @@ public class Snake {
         }
 
     }
-
     public void move(int mouseX, int mouseY) {
 
         for (int i = body.size() - 1; i > 0; i--) {
             body.get(i).setX(body.get(i - 1).getX());
             body.get(i).setY(body.get(i - 1).getY());
         }
-
         double angle = Math.atan2(mouseY -GameWindow.getWindowHeight()/2, mouseX - GameWindow.getWindowWidth()/2);
 
         int newX = (int) (body.get(0).getX() + speed * Math.cos(angle));
@@ -137,7 +130,6 @@ public class Snake {
         }
         return false;
     }
-
     /**
      * selfCollision check if the head of the snake in parameter touch any part of the snake
      * @return true if snake touch head, false if snake don't touch head
@@ -152,7 +144,6 @@ public class Snake {
         }
         return false;
     }
-
     /**
      * distance calculate and return the distance from two point
      * @return distance form two point as int
@@ -170,32 +161,24 @@ public class Snake {
     public void setAccelerating(boolean accelerating) {
         isAccelerating = accelerating;
     }
-
-
     public LinkedList<SnakeBodyPart> getBody(){
         return this.body;
     }
-
     public Direction getDirection() {
         return direction;
     }
-
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
-
     public int getMouseX() {
         return mouseX;
     }
-
     public void setMouseX(int mouseX) {
         this.mouseX = mouseX;
     }
-
     public int getMouseY() {
         return mouseY;
     }
-
     public void setMouseY(int mouseY) {
         this.mouseY = mouseY;
     }

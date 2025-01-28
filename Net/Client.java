@@ -3,7 +3,6 @@ package Net;
 import view.ConnectionMenu;
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 /**
  * This class handle communication with the server is connected to
  */

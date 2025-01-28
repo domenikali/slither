@@ -5,7 +5,6 @@ import model.Snake;
 import model.SnakeBodyPart;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * this class handle the game serverside, responsible for logic and update every client connected
  */
@@ -72,7 +71,6 @@ public class GameServer {
             sendPackeg();
         }
     }
-
     /**
      * addFood generate food around the snake head
      * @param snakeHead SnakeBodyPart of the head of the snake

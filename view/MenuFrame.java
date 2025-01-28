@@ -1,29 +1,18 @@
 package view;
 
 import Net.Server;
-import controller.GameController;
-
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.border.Border;
-
 public class MenuFrame extends JFrame {
-
-
     public MenuFrame( ) {
         setTitle("Slither.io Menu");
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null); // Use null layout manager for absolute positioning
-
-
-
         // Créer les boutons du menu
         JButton soloButton = new JButton("Solo");
         JButton pvspButton = new JButton("PvsP");
@@ -31,7 +20,6 @@ public class MenuFrame extends JFrame {
         JButton quitButton = new JButton("Quit");
         JButton onlineButton = new JButton("Online");
         JButton startServerButton = new JButton("<html>start<br>server<br>");
-
 
         // Style des boutons
         soloButton.setBackground(new Color(0, 255, 0)); // Couleur verte
@@ -59,7 +47,6 @@ public class MenuFrame extends JFrame {
         startServerButton.setFont(new Font("Arial", Font.BOLD, 10));
         startServerButton.setBorder(new LineBorder(Color.BLACK));
 
-
         onlineButton.setBounds(200, 100, 200, 50);
         soloButton.setBounds(200, 160, 200, 50);
         pvspButton.setBounds(200, 220, 200, 50);
@@ -67,14 +54,13 @@ public class MenuFrame extends JFrame {
         quitButton.setBounds(200, 340, 200, 50);
         startServerButton.setBounds(30, 30, 50, 50);
 
-
         // Ajouter des actions aux boutons
         soloButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Fermer le menu et lancer le jeu
                 dispose(); // Ferme la fenêtre du menu
-                new GameWindow(false,null,false); // Lance la fenêtre du jeu
+                new GameWindow(false,false); // Lance la fenêtre du jeu
             }
         });
 
@@ -83,7 +69,7 @@ public class MenuFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Fermer le menu et lancer le jeu
                 dispose(); // Ferme la fenêtre du menu
-                new GameWindow(false,null,true); // Lance la fenêtre du jeu
+                new GameWindow(false,true); // Lance la fenêtre du jeu
             }
         });
 
@@ -92,17 +78,15 @@ public class MenuFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Fermer le menu et lancer le jeu
                 dispose(); // Ferme la fenêtre du menu
-                new GameWindow(true,null,false); // Lance la fenêtre du jeu
+                new GameWindow(true,false); // Lance la fenêtre du jeu
             }
         });
-
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0); // Quitte l'application
             }
         });
-
         onlineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,7 +94,6 @@ public class MenuFrame extends JFrame {
                 new ConnectionMenu().setVisible(true);
             }
         });
-
         startServerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,7 +101,6 @@ public class MenuFrame extends JFrame {
                 startServerButton.setEnabled(false);
             }
         });
-
         add(soloButton);
         add(pvspButton);
         add(quitButton);
@@ -134,7 +116,6 @@ public class MenuFrame extends JFrame {
         titleLabel.setBounds(210, 50, 300, 50);
         add(titleLabel);
 
-
         // Load the background image with an absolute path
         ImageIcon backgroundImage = new ImageIcon("C:\\yassine\\Java\\Projectsss\\NewSlither\\ressources\\MenuBackgound.jpg");
         JLabel backgroundLabel = new JLabel(backgroundImage);
@@ -145,8 +126,6 @@ public class MenuFrame extends JFrame {
         setLocationRelativeTo(null); // Centrer la fenêtre sur l'écran
         setVisible(true);
     }
-
-
     public static void main(String[] args) {
         new MenuFrame().setVisible(true);
     }

@@ -29,9 +29,7 @@ public class ConnectionMenu extends JFrame {
         join.setForeground(Color.WHITE);
         join.setFont(new Font("Arial", Font.BOLD, 20));
         join.setBounds(200, 230, 200, 50);
-
         add(join);
-
         JTextField hostAddress = new JTextField("localhost");
         hostAddress.setBounds(230,120,140,20);
         hostAddress.setBackground(null);
@@ -46,7 +44,6 @@ public class ConnectionMenu extends JFrame {
             }
         });
         add(hostAddress);
-
         JTextField usernameTextBox=new JTextField("your username");
         usernameTextBox.setBounds(200, 160, 200, 50);
         usernameTextBox.setBackground(null);
@@ -62,8 +59,6 @@ public class ConnectionMenu extends JFrame {
             }
         });
         add(usernameTextBox,BorderLayout.CENTER);
-
-
         //when the join button in clicked
         join.addActionListener(new ActionListener() {
             @Override
@@ -72,19 +67,17 @@ public class ConnectionMenu extends JFrame {
                 dispose();
                 String username=usernameTextBox.getText();
                 String hostAdressString = hostAddress.getText();
-
                 try {
                     System.out.println(InetAddress.getLocalHost());
                     Socket socket = new Socket(InetAddress.getByName(hostAdressString),1234);//open a sever at a specified host address at post 1234 (default port for all this project)
                     Client client = new Client(socket,username);
                     client.confirmConnection();
                     new Thread(client::listenForMessage).start();
-                    new GameWindow(false,client,false);
+                    new GameWindow(client);
                 }catch (IOException ignore){
                     System.out.println("CLIENT: connection error");
                     new MenuFrame().setVisible(true);
                 }
-
             }
         });
 

@@ -9,9 +9,7 @@ public class AISnake extends Snake{
     /**
      * constructor initialize a snake and the first point where the snake is looking to*/
     public AISnake(int position, Direction d,ArrayList<Food> foods) {
-
         super(position, d);
-
         lookingTo=closestFood(foods);
     }
     /**
@@ -20,9 +18,7 @@ public class AISnake extends Snake{
      */
     public void moveAI(ArrayList<Food> foods){
         SnakeBodyPart head = getBody().get(0);
-
         lookingTo = closestFood(foods);//finds the closest food
-
         for (int i = getBody().size() - 1; i > 0; i--) {
             getBody().get(i).setX(getBody().get(i - 1).getX());
             getBody().get(i).setY(getBody().get(i - 1).getY());

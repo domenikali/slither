@@ -2,19 +2,16 @@ package Net;
 
 import model.Direction;
 import model.Snake;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 public class Server {
     private final ServerSocket serverSocket;
     private final List<ClientHandler> clientHandlers;
     private final GameServer gameServer;
-
     /**
      * server constructor initialize clientHandlers List and the gameServer class
      * @param serverSocket ServerSocket
@@ -24,7 +21,6 @@ public class Server {
         this.serverSocket = serverSocket;
         this.gameServer=new GameServer(this);
     }
-
     /**
      * this method start accepting client asking for connection to the server, is a blocking method and should be run on another thread
      * and creat a ClientHandler for each on a separate thread
@@ -46,7 +42,6 @@ public class Server {
             closeServerSocket();
         }
     }
-
     /**
      * set the spawn of the snake point randomly in a 200px radius
      */
@@ -54,7 +49,6 @@ public class Server {
         Random rand = new Random();
         return rand.nextInt(100)+100;
     }
-
     public void closeServerSocket() {
         try {
             if (serverSocket != null) {
@@ -64,7 +58,6 @@ public class Server {
             e.printStackTrace();
         }
     }
-
     /**
      * send message to every ClientConnected
      * @param str String
@@ -74,7 +67,6 @@ public class Server {
             clientHandler.write(str);
         }
     }
-
     /**
      * while the server socket is connected update the position trying to maintain a stable 60 ticks
      */
@@ -103,5 +95,3 @@ public class Server {
         }catch (IOException ignore){}
     }
 }
-
-

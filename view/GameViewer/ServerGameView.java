@@ -1,30 +1,24 @@
 package view.GameViewer;
 
 import Net.Client;
+import controller.OnlineGameController;
 import model.Pair;
 import Net.Serialize;
-import controller.GameController;
 import view.MenuFrame;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 public class ServerGameView extends GameView {
-
-    private final GameController gc;
+    private final OnlineGameController gc;
     private final Image background;
-
     private final Image[] foodImage;
     private final Image snakeImage;
-
     private final Client client;
-
     public ServerGameView( Client client) {
         this.client=client;
-        this.gc=new GameController(client);
+        this.gc=new OnlineGameController(client);
         background = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/ressources/background.PNG"))).getImage();
         snakeImage=new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/ressources/serpent.png"))).getImage();
         foodImage=new Image[4];
@@ -89,13 +83,9 @@ public class ServerGameView extends GameView {
             }
         repaint();
     }
-    public GameController getGc() {
+    public OnlineGameController getGc() {
         return gc;
     }
-
     @Override
-    public void updateTimerLabel() {
-
-    }
-
+    public void updateTimerLabel() {}
 }

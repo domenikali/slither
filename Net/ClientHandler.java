@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * this class handle single client serverside, is responsible to send and receive message to and from the client
+ * @author Leonardo Domenicali
  */
 
 public class ClientHandler implements Runnable{

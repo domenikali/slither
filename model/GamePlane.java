@@ -1,37 +1,21 @@
 package model;
 
-
 import controller.GameController;
-import view.MenuFrame;
-
-
-import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.Timer;
-
 public class GamePlane {
-
     private Snake snake;
-
     private Snake snake2;
-
     private AISnake aiSnake;
-
     private Timer gameTimer;
     private Timer foodTimer;
-
     private ArrayList<Food> foods;
     private GameController controller;
     private Timer countdownTimer;  // Nouveau chronomètre pour le mode solo
     private int remainingTime;
-
     private int countdownSeconds;
-
     private int score;
-
-
-
     public GamePlane(GameController controller){
         this.snake=new Snake(110,Direction.RIGHT);
         this.score = 0;
@@ -87,12 +71,9 @@ public class GamePlane {
 
                                     }, 1000);
                                 }
-
                             }
                         },1);
-
                     }
-
                     if(checkBodyCollision()){
                         gameTimer.cancel();
                         foodTimer.cancel();
@@ -147,9 +128,6 @@ public class GamePlane {
                     generateFood(1500,1500);
                 }
             }, 0, 1000);
-
-
-
         }else{
             gameTimer.schedule(new TimerTask() {
                 @Override
@@ -168,7 +146,6 @@ public class GamePlane {
                                 // Revenir au menu
                                 controller.getGv().showMenu();
                                 controller.getGv().closeCurrentGameWindow();
-
 
                             }
                         }, 1000);
@@ -209,23 +186,17 @@ public class GamePlane {
         }, 0, 1);
 
     }
-
-
-
-
     public void generateFood(int a,int b) {
         Random random = new Random();
         int x = random.nextInt(a);
         int y = random.nextInt(b);
         Color color = Color.RED; // Couleur de la nourriture
         int size = 10; // Taille de la nourriture
-
         // Générer un nombre aléatoire entre 0 (inclus) et 4 (exclus)
         int randomNumber = random.nextInt(4);
         Food food = new Food(x, y, randomNumber, size);
         foods.add(food);
     }
-
     public void checkFoodCollision() {
         for (int i = foods.size() - 1; i >= 0; i--) {
             Food food = foods.get(i);
@@ -274,7 +245,6 @@ public class GamePlane {
             if (snake.getBody().get(0).getX() == snake2.getBody().get(i).getX() && snake.getBody().get(0).getY() == snake2.getBody().get(i).getY()) {
                 return 2;
             }
-
         }
         return 0;
     }
@@ -305,31 +275,24 @@ public class GamePlane {
     public ArrayList<Food> getFoods(){
         return this.foods;
     }
-
     public Snake getSnake() {
         return snake;
     }
-
     public Snake getSnake2() {
         return snake2;
     }
-
     public AISnake getAiSnake(){
         return aiSnake;
     }
-
     public int getRemainingTime() {
         return (int)remainingTime/40;
     }
-
     public GameController getController() {
         return controller;
     }
-
     public int getScore() {
         return score;
     }
-
     public Boolean getAIMode(){
         return this.controller.isAI();
     }
