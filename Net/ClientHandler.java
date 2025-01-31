@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * this class handle single client serverside, is responsible to send and receive message to and from the client
@@ -27,14 +28,18 @@ public class ClientHandler implements Runnable{
      * ClientHandler constructor instantiate a BufferedReader and a BufferedWriter connected to the client through the socket and wait for a username from the client
      * @param socket Socket connected to the client
      */
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, Set<String> users) {
         try {
             this.isAlive=true;
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.clientUserNamme = bufferedReader.readLine();
+            while (users.contains(this.clientUserNamme)){
+                this.clientUserNamme+=1;
+            }
             clientHandlers.add(this);
+            users.add(this.clientUserNamme);
             //broadcastMessage("SERVER: " + clientUserNamme + "has entered the chat");
         }catch (IOException e){
             closeEverything(socket,bufferedWriter,bufferedReader);

@@ -68,9 +68,9 @@ public class ServerGameView extends GameView {
                 g.drawString("Score: " + (snakes.get(client.getUserName()).size() - 5), 10, 20);
 
                 //paint the foods
-                for (int i = 0; i < foods.size(); i++) {
+                for (Pair food : foods) {
                     //change color depending on x value, gives the impression of randomness in color
-                    g.drawImage(foodImage[foods.get(i).getX() % 4], foods.get(i).getX() + offsetX, foods.get(i).getY() + offsetY, 10, 10, this);
+                    g.drawImage(foodImage[food.getX() % 4], food.getX() + offsetX, food.getY() + offsetY, 10, 10, this);
                 }
                 //borders
                 Graphics2D g2d = (Graphics2D) g;

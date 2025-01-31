@@ -5,19 +5,21 @@ import model.Snake;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
 public class Server {
     private final ServerSocket serverSocket;
     private final List<ClientHandler> clientHandlers;
     private final GameServer gameServer;
+
+    private final Set<String> users;
     /**
      * server constructor initialize clientHandlers List and the gameServer class
      * @param serverSocket ServerSocket
      */
     public Server(ServerSocket serverSocket) {
         clientHandlers = new ArrayList<>();
+        users = new HashSet<>();
         this.serverSocket = serverSocket;
         this.gameServer=new GameServer(this);
     }
@@ -30,7 +32,7 @@ public class Server {
         try {
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(socket);
+                ClientHandler clientHandler = new ClientHandler(socket,users);
                 System.out.println("SERVER: New player connected: "+clientHandler.getClientUserNamme());
                 clientHandlers.add(clientHandler);
                 gameServer.addPlayer(clientHandler,new Snake(startPos(), Direction.RIGHT));
@@ -81,7 +83,7 @@ public class Server {
                 long finish = System.currentTimeMillis()-start;
 
                 if(finish<17) //1000/60 = aprox 17
-                    Thread.sleep(17-(finish));
+                    t.sleep(17-(finish));
             }catch (InterruptedException ignore){
             }
         }

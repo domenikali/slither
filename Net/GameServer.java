@@ -124,6 +124,7 @@ public class GameServer {
 
     /**
      * generate food from snake death
+     * @param snake snake object to retrieve snake body-part position
      */
     public void explode(Snake snake){
         Random random = new Random();

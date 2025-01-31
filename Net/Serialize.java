@@ -47,6 +47,7 @@ public class Serialize {
      * serialize a snake including the username of the client
      * @param player map entry containing a ClientHandler and a Snake
      * @return String
+     * ex: your username,730:400,584:400,438:400,292:400,146:400; size of 5
      * */
     public static String serializePlayerSnake(Map.Entry<ClientHandler, Snake> player){
         StringBuilder stringBuilder = new StringBuilder();

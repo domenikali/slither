@@ -26,24 +26,46 @@ public class GameController extends AbstractGameController implements KeyListene
     public void keyPressed(KeyEvent e) {
         if(modePvsP){
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_LEFT, KeyEvent.VK_A:
+                case KeyEvent.VK_LEFT:
                     if (gp.getSnake().getDirection() != Direction.RIGHT) {
                         gp.getSnake().setDirection(Direction.LEFT);
+
                     }
                     break;
-                case KeyEvent.VK_RIGHT,KeyEvent.VK_D:
+                case KeyEvent.VK_RIGHT:
                     if (gp.getSnake().getDirection() != Direction.LEFT) {
                         gp.getSnake().setDirection(Direction.RIGHT);
                     }
                     break;
-                case KeyEvent.VK_UP,KeyEvent.VK_W:
+                case KeyEvent.VK_UP:
                     if (gp.getSnake().getDirection() != Direction.DOWN) {
                         gp.getSnake().setDirection(Direction.UP);
                     }
                     break;
-                case KeyEvent.VK_DOWN,KeyEvent.VK_S:
+                case KeyEvent.VK_DOWN:
                     if (gp.getSnake().getDirection() != Direction.UP) {
                         gp.getSnake().setDirection(Direction.DOWN);
+                    }
+                    break;
+                case  KeyEvent.VK_A:
+                    if (gp.getSnake2().getDirection() != Direction.RIGHT) {
+                        gp.getSnake2().setDirection(Direction.LEFT);
+
+                    }
+                    break;
+                case KeyEvent.VK_D:
+                    if (gp.getSnake2().getDirection() != Direction.LEFT) {
+                        gp.getSnake2().setDirection(Direction.RIGHT);
+                    }
+                    break;
+                case KeyEvent.VK_W:
+                    if (gp.getSnake2().getDirection() != Direction.DOWN) {
+                        gp.getSnake2().setDirection(Direction.UP);
+                    }
+                    break;
+                case KeyEvent.VK_S:
+                    if (gp.getSnake2().getDirection() != Direction.UP) {
+                        gp.getSnake2().setDirection(Direction.DOWN);
                     }
                     break;
             }
